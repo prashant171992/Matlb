@@ -41,6 +41,7 @@ $(document).ready(function()
                     }
                 });
             } else {
+                $("#loading").hide();
                 $("#register-msg").text("Please enter valid email address");
             }
         });
