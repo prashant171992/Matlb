@@ -8,9 +8,9 @@ $(document).ready(function()
         $("#notifyBtn").click(function(e) {
             e.preventDefault();
             $("#register-msg").show();
-            $("#loading").show()
             var emailId = $("#emailId").val();
             if(validateEmail(emailId)){
+                $("#loading").show()
                 var sendData = {"emailId": emailId};
                 $.ajax({
                     type : "POST" ,
@@ -41,7 +41,6 @@ $(document).ready(function()
                     }
                 });
             } else {
-                $("#loading").hide();
                 $("#register-msg").text("Please enter valid email address");
             }
         });
