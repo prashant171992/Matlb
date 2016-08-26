@@ -22,7 +22,8 @@ public class Bookmark implements Serializable {
     @Column(columnDefinition = "Text")
     private String summary;
 
-    @Column(nullable=false)
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "create_dt")
     private Date createDt;
 
     private String note;

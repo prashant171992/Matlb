@@ -24,6 +24,10 @@ public class ScrapingResultHandler {
         if (bookmarks.size() == 0)
         {
             System.out.println("No bookmark of url: " + url + " found.");
+            Bookmark bookmark = new Bookmark();
+            bookmark.setUrl(url);
+            bookmark.setSummary(scrapingResultMessage.getSummary());
+            bookmarkDao.save(bookmark);
         }
         else
         {

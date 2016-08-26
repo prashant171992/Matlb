@@ -2,6 +2,7 @@
 
 .gradle/
 /build
+gradle/wrapper/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
