@@ -11,6 +11,9 @@ public class BaseResponse {
         this.message = message;
     }
 
+    public BaseResponse() {
+
+    }
 
     public String getMessage() {
         return message;

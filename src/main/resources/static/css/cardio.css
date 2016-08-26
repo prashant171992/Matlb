@@ -141,7 +141,7 @@ header .typed {
 
 header .typed-cursor {
 	font-size: 60px;
-	display: inline-block;
+	display: inline;
 	margin: 0 10px;
 	color: #00a8ff;
 	-webkit-animation-name: flash;

@@ -1,8 +1,7 @@
 package com.matlb.controller;
 
-import com.matlb.domain.Subscriber;
-import com.matlb.domain.User;
-import com.matlb.domain.UserResponse;
+import com.matlb.domain.*;
+import com.matlb.service.PollService;
 import com.matlb.service.UserService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -25,6 +24,9 @@ public class MatlbController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PollService pollService;
 
 
     //@RequestMapping(value = "/user/add/{email:.+}")
@@ -53,7 +55,31 @@ public class MatlbController {
         return getUserService().findAllUsers();
     }
 
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/create/find/{pageNumber}")
+    public BasePollResponse findPollCreatedByUser(@RequestBody User user , @PathVariable Integer pageNumber) {
+        return getPollService().getPollsCreatedByUser(user , pageNumber);
+    }
+
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/answered/find/{pageNumber}")
+    public BasePollResponse findPollAnsweredByUser(@RequestBody User user , @PathVariable Integer pageNumber) {
+        return getPollService().getPollAnsweredByUser(user , pageNumber);
+    }
+
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/question/answerer/find/{pollId}/{pageNumber}")
+    public BasePollResponse getAnswersByPoll(@RequestBody User user , @PathVariable Integer pageNumber , @PathVariable Integer pollId) {
+        return getPollService().getPollAskedToByUser(user , pollId , pageNumber);
+    }
+
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/show/{pageNumber}")
+    public BasePollResponse findPollToBeShownToUser(@RequestBody User user , @PathVariable Integer pageNumber) {
+        return getPollService().getPollToBeShownByUser(user , pageNumber);
+    }
+
     public UserService getUserService() {
         return userService;
+    }
+
+    public PollService getPollService() {
+        return pollService;
     }
 }

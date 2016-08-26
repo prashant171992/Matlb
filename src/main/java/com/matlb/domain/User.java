@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by prassingh on 3/21/16.
@@ -25,11 +26,33 @@ public class User implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "create_dt")
     private Date createDt;
 
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "update_dt")
     private Date updateDt;
+
+    @Column(name = "credits")
+    private Double credits = 0.0;
+
+    @Column(name = "phone_number")
+    private int phoneNumber = 99999999;
+
+    @NotNull
+    @Column(name = "question_count")
+    private int questionCount = 0;
+
+    @NotNull
+    @Column(name = "answer_count")
+    private int answerCount = 0;
+
+    @Column(name = "genre_pref")
+    private String genrePref;
+
+    @Column(name = "profile_pic")
+    private String profilePic;
 
     // Public methods
 
@@ -37,6 +60,10 @@ public class User implements Serializable {
 
     public User(String emailId){
         this.emailId = emailId;
+    }
+
+    public User(int userId) {
+        this.id = userId;
     }
 
 
@@ -79,4 +106,53 @@ public class User implements Serializable {
     public void setUpdateDate(Date updateDate) {
         this.updateDt = updateDate;
     }
+
+    public Double getCredits() {
+        return credits;
+    }
+
+    public void setCredits(Double credits) {
+        this.credits = credits;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public int getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+        this.questionCount = questionCount;
+    }
+
+    public int getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(int answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    public String getGenrePref() {
+        return genrePref;
+    }
+
+    public void setGenrePref(String genrePref) {
+        this.genrePref = genrePref;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
 }

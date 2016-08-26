@@ -51,8 +51,33 @@ jQuery(function($) {
 		$('nav.navbar-fixed-top .navbar-brand img').attr('src', $('nav.navbar-fixed-top .navbar-brand img').data("active-url"));
 
 		// Typing Intro Init
-		$(".typed").typewriter({
-			speed: 60
+
+		var texts = ["Latest to Quit Google’s Self-Driving Car Unit: Top Roboticist",
+					"This is perfect. Super simple and worked like a charm. Nice work!",
+					"Rio Olympics: Shooter Jitu Rai finishes 8th in 10m Air Pistol final",
+					"Find yourself someone who looks at you the way Aquaman looks at Superman."];
+
+
+
+		//var j = 0, howManyTimes = 4;
+		//function f() {
+		//	//alert( "hi" );
+		//	$('.typed').text(texts[j]);
+		//	$(".typed").typewriter({
+		//		speed: 40
+		//	});
+		//	j++;
+		//	if( j < howManyTimes ){
+		//		setTimeout( f, 3000 );
+		//	}
+		//}
+		//f();
+
+
+		$(".typed").typed({
+			strings: texts,
+			typeSpeed: 20,
+			loop: true,
 		});
 
 		// Popup Form Init
