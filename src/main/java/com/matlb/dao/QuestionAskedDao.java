@@ -19,5 +19,6 @@ public interface QuestionAskedDao extends JpaRepository<QuestionAsked , Integer>
     Page<QuestionAsked> findByPollAndAsker(Poll poll , User asker , Pageable pageRequest);
     Page<QuestionAsked> findByAnswererAndStatus (User user , StatusType status, Pageable pageRequest);
     List<QuestionAsked> findByPollAndAskerAndStatus(Poll poll , User asker , int status);
+    QuestionAsked findByPollAndAnswererAndStatus(Poll poll , User answerer , StatusType status);
 
 }

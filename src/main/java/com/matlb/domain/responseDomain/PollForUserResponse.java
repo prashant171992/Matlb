@@ -1,17 +1,26 @@
-package com.matlb.domain;
+package com.matlb.domain.responseDomain;
+
+import com.matlb.domain.PollQuestion;
+
+import java.util.Date;
 
 /**
- * Created by prassingh on 8/21/16.
+ * Created by prassingh on 8/25/16.
  */
-public class PollAnsweredResponse {
+public class PollForUserResponse {
 
-    public PollAnsweredResponse () {
+    public PollForUserResponse () {
 
     }
 
-    public PollAnsweredResponse(PollAnswer pollAnswer) {
-        this.answerGiven = pollAnswer.getAnswer().ordinal();
-        this.genre = pollAnswer.getPoll().getGenre().name();
+    public PollForUserResponse (PollQuestion pollQuestion) {
+        this.questionText = pollQuestion.getQuestionText();
+        this.optionAText = pollQuestion.getOptionA();
+        this.optionBText = pollQuestion.getOptionB();
+        this.optionCText = pollQuestion.getOptionC();
+        this.optionDText = pollQuestion.getOptionD();
+        this.optionEText = pollQuestion.getOptionE();
+        this.validUpto = pollQuestion.getPoll().getValidUpto();
     }
 
     private String questionText;
@@ -26,9 +35,9 @@ public class PollAnsweredResponse {
 
     private String optionEText;
 
-    private String genre;
+    private int creditToBeEarned;
 
-    private int answerGiven;
+    private Date validUpto;
 
     public String getQuestionText() {
         return questionText;
@@ -78,19 +87,19 @@ public class PollAnsweredResponse {
         this.optionEText = optionEText;
     }
 
-    public String getGenre() {
-        return genre;
+    public int getCreditToBeEarned() {
+        return creditToBeEarned;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setCreditToBeEarned(int creditToBeEarned) {
+        this.creditToBeEarned = creditToBeEarned;
     }
 
-    public int getAnswerGiven() {
-        return answerGiven;
+    public Date getValidUpto() {
+        return validUpto;
     }
 
-    public void setAnswerGiven(int answerGiven) {
-        this.answerGiven = answerGiven;
+    public void setValidUpto(Date validUpto) {
+        this.validUpto = validUpto;
     }
 }

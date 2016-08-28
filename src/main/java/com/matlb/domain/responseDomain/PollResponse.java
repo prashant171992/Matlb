@@ -1,4 +1,6 @@
-package com.matlb.domain;
+package com.matlb.domain.responseDomain;
+
+import com.matlb.domain.Poll;
 
 import java.util.Date;
 

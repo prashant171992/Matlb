@@ -55,12 +55,14 @@ public class Poll implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private GenreType genre = GenreType.NONE;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "create_dt")
+    @Column(name = "create_dt" , insertable = false, updatable = false)
     private Date createDt;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "update_dt")
+    @Column(name = "update_dt" , insertable = false, updatable = false)
     private Date updateDt;
 
     @Column(name = "valid_upto")

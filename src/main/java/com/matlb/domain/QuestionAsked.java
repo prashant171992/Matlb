@@ -37,12 +37,14 @@ public class QuestionAsked implements Serializable{
     @Column(name = "credit_alloted" , nullable = false)
     private int creditAlloted = 0;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "create_dt")
+    @Column(name = "create_dt" , insertable = false, updatable = false)
     private Date createDt;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "update_dt")
+    @Column(name = "update_dt" , insertable = false, updatable = false)
     private Date updateDt;
 
     public int getId() {

@@ -2,7 +2,7 @@ package com.matlb.service;
 
 import com.matlb.domain.Subscriber;
 import com.matlb.domain.User;
-import com.matlb.domain.UserResponse;
+import com.matlb.domain.responseDomain.UserResponse;
 
 import java.util.List;
 
