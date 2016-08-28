@@ -44,12 +44,14 @@ public class PollQuestion implements Serializable {
     @Column(name = "option_E")
     private String optionE;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "create_dt")
+    @Column(name = "create_dt" , insertable = false, updatable = false)
     private Date createDt;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "update_dt")
+    @Column(name = "update_dt" , insertable = false, updatable = false)
     private Date updateDt;
 
     public Poll getPoll() {

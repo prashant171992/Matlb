@@ -1,4 +1,6 @@
-package com.matlb.domain;
+package com.matlb.domain.responseDomain;
+
+import com.matlb.domain.QuestionAsked;
 
 /**
  * Created by prassingh on 8/21/16.

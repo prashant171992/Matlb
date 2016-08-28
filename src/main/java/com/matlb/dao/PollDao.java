@@ -23,6 +23,8 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAskerAndStatus(User asker , StatusType status, Pageable pageRequest);
 
+    Page<Poll> findByAsker(User asker, Pageable pageRequest);
+
     Poll findById(int pollId);
 
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);

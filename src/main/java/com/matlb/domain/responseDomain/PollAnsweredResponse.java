@@ -1,24 +1,19 @@
-package com.matlb.domain;
+package com.matlb.domain.responseDomain;
 
-import java.util.Date;
+import com.matlb.domain.PollAnswer;
 
 /**
- * Created by prassingh on 8/25/16.
+ * Created by prassingh on 8/21/16.
  */
-public class PollForUserResponse {
+public class PollAnsweredResponse {
 
-    public PollForUserResponse () {
+    public PollAnsweredResponse () {
 
     }
 
-    public PollForUserResponse (PollQuestion pollQuestion) {
-        this.questionText = pollQuestion.getQuestionText();
-        this.optionAText = pollQuestion.getOptionA();
-        this.optionBText = pollQuestion.getOptionB();
-        this.optionCText = pollQuestion.getOptionC();
-        this.optionDText = pollQuestion.getOptionD();
-        this.optionEText = pollQuestion.getOptionE();
-        this.validUpto = pollQuestion.getPoll().getValidUpto();
+    public PollAnsweredResponse(PollAnswer pollAnswer) {
+        this.answerGiven = pollAnswer.getAnswer().ordinal();
+        this.genre = pollAnswer.getPoll().getGenre().name();
     }
 
     private String questionText;
@@ -33,9 +28,9 @@ public class PollForUserResponse {
 
     private String optionEText;
 
-    private int creditToBeEarned;
+    private String genre;
 
-    private Date validUpto;
+    private int answerGiven;
 
     public String getQuestionText() {
         return questionText;
@@ -85,19 +80,19 @@ public class PollForUserResponse {
         this.optionEText = optionEText;
     }
 
-    public int getCreditToBeEarned() {
-        return creditToBeEarned;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setCreditToBeEarned(int creditToBeEarned) {
-        this.creditToBeEarned = creditToBeEarned;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
-    public Date getValidUpto() {
-        return validUpto;
+    public int getAnswerGiven() {
+        return answerGiven;
     }
 
-    public void setValidUpto(Date validUpto) {
-        this.validUpto = validUpto;
+    public void setAnswerGiven(int answerGiven) {
+        this.answerGiven = answerGiven;
     }
 }

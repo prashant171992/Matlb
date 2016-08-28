@@ -1,15 +1,15 @@
 package com.matlb.controller;
 
-import com.matlb.domain.*;
+import com.matlb.domain.Subscriber;
+import com.matlb.domain.User;
+import com.matlb.domain.requestDomain.AnswerQuestionRequest;
+import com.matlb.domain.requestDomain.CreatePollRequest;
+import com.matlb.domain.requestDomain.PollEnquiryRequest;
+import com.matlb.domain.responseDomain.BasePollResponse;
+import com.matlb.domain.responseDomain.UserResponse;
 import com.matlb.service.PollService;
 import com.matlb.service.UserService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,24 +55,34 @@ public class MatlbController {
         return getUserService().findAllUsers();
     }
 
-    @RequestMapping(method = RequestMethod.POST , value = "/poll/create/find/{pageNumber}")
-    public BasePollResponse findPollCreatedByUser(@RequestBody User user , @PathVariable Integer pageNumber) {
-        return getPollService().getPollsCreatedByUser(user , pageNumber);
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/find/{pageNumber}")
+    public BasePollResponse findPollCreatedByUser(@RequestBody PollEnquiryRequest pollEnquiryRequest , @PathVariable Integer pageNumber) {
+        return getPollService().getPollsCreatedByUser(pollEnquiryRequest , pageNumber);
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/answered/find/{pageNumber}")
-    public BasePollResponse findPollAnsweredByUser(@RequestBody User user , @PathVariable Integer pageNumber) {
-        return getPollService().getPollAnsweredByUser(user , pageNumber);
+    public BasePollResponse findPollAnsweredByUser(@RequestBody PollEnquiryRequest pollEnquiryRequest, @PathVariable Integer pageNumber) {
+        return getPollService().getPollAnsweredByUser(pollEnquiryRequest , pageNumber);
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/question/answerer/find/{pollId}/{pageNumber}")
-    public BasePollResponse getAnswersByPoll(@RequestBody User user , @PathVariable Integer pageNumber , @PathVariable Integer pollId) {
+    public BasePollResponse getAnswerersByPoll(@RequestBody User user , @PathVariable Integer pageNumber , @PathVariable Integer pollId) {
         return getPollService().getPollAskedToByUser(user , pollId , pageNumber);
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/show/{pageNumber}")
     public BasePollResponse findPollToBeShownToUser(@RequestBody User user , @PathVariable Integer pageNumber) {
         return getPollService().getPollToBeShownByUser(user , pageNumber);
+    }
+
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/create")
+    public BasePollResponse createPoll(@RequestBody CreatePollRequest createPollRequest) {
+        return getPollService().createPoll(createPollRequest);
+    }
+
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/answer")
+    public BasePollResponse answerPollQuestion(@RequestBody AnswerQuestionRequest answerQuestionRequest) {
+        return getPollService().answerPollQuestion(answerQuestionRequest);
     }
 
     public UserService getUserService() {

@@ -34,8 +34,9 @@ public class PollAnswer implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private ResultType answer;
 
+    @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "create_dt")
+    @Column(name = "create_dt" , insertable = false, updatable = false)
     private Date createDt;
 
     public int getId() {

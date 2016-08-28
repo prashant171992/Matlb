@@ -35,10 +35,10 @@ public class User implements Serializable {
     private Date updateDt;
 
     @Column(name = "credits")
-    private Double credits = 0.0;
+    private int credits = 0;
 
     @Column(name = "phone_number")
-    private int phoneNumber = 99999999;
+    private Integer phoneNumber = 99999999;
 
     @NotNull
     @Column(name = "question_count")
@@ -107,19 +107,19 @@ public class User implements Serializable {
         this.updateDt = updateDate;
     }
 
-    public Double getCredits() {
+    public int getCredits() {
         return credits;
     }
 
-    public void setCredits(Double credits) {
+    public void setCredits(int credits) {
         this.credits = credits;
     }
 
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

@@ -1,4 +1,4 @@
-package com.matlb.domain;
+package com.matlb.domain.responseDomain;
 
 import java.util.List;
 

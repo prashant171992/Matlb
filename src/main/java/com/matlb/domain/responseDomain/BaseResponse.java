@@ -1,4 +1,4 @@
-package com.matlb.domain;
+package com.matlb.domain.responseDomain;
 
 /**
  * Created by prassingh on 3/29/16.

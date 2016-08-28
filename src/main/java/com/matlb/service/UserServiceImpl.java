@@ -5,7 +5,7 @@ import com.matlb.dao.UserDao;
 import com.matlb.domain.MatlbStringConstants;
 import com.matlb.domain.Subscriber;
 import com.matlb.domain.User;
-import com.matlb.domain.UserResponse;
+import com.matlb.domain.responseDomain.UserResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
