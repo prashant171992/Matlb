@@ -2,10 +2,7 @@ package com.matlb.service;
 
 import com.matlb.dao.*;
 import com.matlb.domain.*;
-import com.matlb.domain.requestDomain.AnswerQuestionRequest;
-import com.matlb.domain.requestDomain.CreatePollRequest;
-import com.matlb.domain.requestDomain.PollEnquiryRequest;
-import com.matlb.domain.requestDomain.QuestionAskRequest;
+import com.matlb.domain.requestDomain.*;
 import com.matlb.domain.responseDomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -160,17 +157,22 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public BasePollResponse getPollToBeShownByUser(User user,  int pageNum , int openForAll) {
-        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE);
+    public BasePollResponse getPollToBeShownByUser(ShowPollRequest showPollRequest) {
+        PageRequest pageRequest = new PageRequest(showPollRequest.getPageNumber() , PAGE_SIZE);
 
         BasePollResponse basePollResponse ;
+        User user = showPollRequest.getUser();
 
         if((user = isValidUser(user)) != null) {
+            if(showPollRequest.getGcmToken() != null) {
+                user.setUserToken(showPollRequest.getGcmToken());
+                getUserService().saveUser(user);
+            }
             basePollResponse = new BasePollResponse("response okay !");
 
             List<PollForUserResponse> pollForUserResponseList = new ArrayList<PollForUserResponse>();
 
-            if(openForAll == 1){
+            if(showPollRequest.getOpenForAll() == 1){
 
                 Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
                 for(Poll poll : polls) {
@@ -374,7 +376,11 @@ public class PollServiceImpl implements PollService {
     }
 
     private User isValidUser(User tempUser) {
-        tempUser = getUserDao().findByEmailIdAndUserToken(tempUser.getEmailId() , tempUser.getUserToken());
+        User user = getUserService().authenticateUser(tempUser.getEmailId() , tempUser.getUserToken());
+        if(user == null){
+            return null;
+        }
+        tempUser = getUserDao().findByEmailId(tempUser.getEmailId());
         return tempUser;
     }
 

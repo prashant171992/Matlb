@@ -4,6 +4,7 @@ import com.matlb.domain.User;
 import com.matlb.domain.requestDomain.AnswerQuestionRequest;
 import com.matlb.domain.requestDomain.CreatePollRequest;
 import com.matlb.domain.requestDomain.PollEnquiryRequest;
+import com.matlb.domain.requestDomain.ShowPollRequest;
 import com.matlb.domain.responseDomain.BasePollResponse;
 
 /**
@@ -17,7 +18,7 @@ public interface PollService {
 
     public BasePollResponse getPollAskedToByUser(User user , int pollId , int pageNum);
 
-    public BasePollResponse getPollToBeShownByUser(User user , int pageNum , int openForAll);
+    public BasePollResponse getPollToBeShownByUser(ShowPollRequest showPollRequest);
 
     public BasePollResponse createPoll(CreatePollRequest createPollRequest);
 
