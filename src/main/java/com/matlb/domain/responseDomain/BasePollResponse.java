@@ -21,8 +21,6 @@ public class BasePollResponse extends BaseResponse {
 
     private List<PollQuestionAskedToResponse> pollQuestionAskedToResponses;
 
-    private List<PollResponse> pollResponses;
-
     private List<PollForUserResponse> pollForUserResponses;
 
     public List<PollResponse> getPollResponseList() {
@@ -47,14 +45,6 @@ public class BasePollResponse extends BaseResponse {
 
     public void setPollQuestionAskedToResponses(List<PollQuestionAskedToResponse> pollQuestionAskedToResponses) {
         this.pollQuestionAskedToResponses = pollQuestionAskedToResponses;
-    }
-
-    public List<PollResponse> getPollResponses() {
-        return pollResponses;
-    }
-
-    public void setPollResponses(List<PollResponse> pollResponses) {
-        this.pollResponses = pollResponses;
     }
 
     public List<PollForUserResponse> getPollForUserResponses() {
