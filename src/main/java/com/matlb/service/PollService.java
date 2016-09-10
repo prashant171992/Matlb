@@ -17,7 +17,7 @@ public interface PollService {
 
     public BasePollResponse getPollAskedToByUser(User user , int pollId , int pageNum);
 
-    public BasePollResponse getPollToBeShownByUser(User user , int pageNum);
+    public BasePollResponse getPollToBeShownByUser(User user , int pageNum , int openForAll);
 
     public BasePollResponse createPoll(CreatePollRequest createPollRequest);
 

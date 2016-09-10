@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PollAnswerDao extends JpaRepository<PollAnswer, Integer> {
 
     PollAnswer findByPoll(Poll poll);
+    PollAnswer findByPollAndAnswerer(Poll poll , User user);
     Page<PollAnswer> findByAnswerer(User user , Pageable pageRequest);
 
 }

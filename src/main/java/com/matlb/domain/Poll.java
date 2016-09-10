@@ -68,6 +68,12 @@ public class Poll implements Serializable {
     @Column(name = "valid_upto")
     private Date validUpto;
 
+    @Column(name = "open")
+    private int pollOpenForAll = 1;
+
+    @Column(name = "anonymous")
+    private int userAnonymous = 1;
+
     @OneToMany(fetch = FetchType.LAZY , mappedBy = "poll" , cascade = CascadeType.ALL)
     private List<PollAnswer> pollAnswers;
 
@@ -188,5 +194,21 @@ public class Poll implements Serializable {
 
     public void setPollQuestion(PollQuestion pollQuestion) {
         this.pollQuestion = pollQuestion;
+    }
+
+    public int getPollOpenForAll() {
+        return pollOpenForAll;
+    }
+
+    public void setPollOpenForAll(int pollOpenForAll) {
+        this.pollOpenForAll = pollOpenForAll;
+    }
+
+    public int getUserAnonymous() {
+        return userAnonymous;
+    }
+
+    public void setUserAnonymous(int userAnonymous) {
+        this.userAnonymous = userAnonymous;
     }
 }

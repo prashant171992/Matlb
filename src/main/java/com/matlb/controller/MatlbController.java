@@ -41,7 +41,7 @@ public class MatlbController {
 
     @RequestMapping(method = RequestMethod.POST , value = "/user/add")
     public UserResponse createUser(@RequestBody User user) {
-        return getUserService().createUser(user.getEmailId());
+        return getUserService().createUser(user.getEmailId() , user.getUserToken());
     }
 
     @RequestMapping(value = "/user/find/{id}")
@@ -50,10 +50,10 @@ public class MatlbController {
     }
 
 
-    @RequestMapping(value = "/user/get/all")
-    public List<User> getAllUsers() {
-        return getUserService().findAllUsers();
-    }
+//    @RequestMapping(value = "/user/get/all")
+//    public List<User> getAllUsers() {
+//        return getUserService().findAllUsers();
+//    }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/find/{pageNumber}")
     public BasePollResponse findPollCreatedByUser(@RequestBody PollEnquiryRequest pollEnquiryRequest , @PathVariable Integer pageNumber) {
@@ -70,9 +70,9 @@ public class MatlbController {
         return getPollService().getPollAskedToByUser(user , pollId , pageNumber);
     }
 
-    @RequestMapping(method = RequestMethod.POST , value = "/poll/show/{pageNumber}")
-    public BasePollResponse findPollToBeShownToUser(@RequestBody User user , @PathVariable Integer pageNumber) {
-        return getPollService().getPollToBeShownByUser(user , pageNumber);
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/show/{pageNumber}/{openForAll}")
+    public BasePollResponse findPollToBeShownToUser(@RequestBody User user , @PathVariable Integer pageNumber , @PathVariable Integer openForAll) {
+        return getPollService().getPollToBeShownByUser(user , pageNumber , openForAll);
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/create")

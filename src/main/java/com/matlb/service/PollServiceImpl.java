@@ -160,7 +160,7 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public BasePollResponse getPollToBeShownByUser(User user,  int pageNum) {
+    public BasePollResponse getPollToBeShownByUser(User user,  int pageNum , int openForAll) {
         PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE);
 
         BasePollResponse basePollResponse ;
@@ -168,13 +168,31 @@ public class PollServiceImpl implements PollService {
         if((user = isValidUser(user)) != null) {
             basePollResponse = new BasePollResponse("response okay !");
 
-            Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatus(user , StatusType.PENDING , pageRequest);
-
             List<PollForUserResponse> pollForUserResponseList = new ArrayList<PollForUserResponse>();
 
-            for(QuestionAsked questionAsked : questionAskedList) {
-                PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
-                pollForUserResponseList.add(pollForUserResponse);
+            if(openForAll == 1){
+
+                Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
+                for(Poll poll : polls) {
+                    if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswererAndStatus(poll, user , StatusType.ALL) == null) {
+                        PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
+                        if(poll.getUserAnonymous() == 0) {
+                            pollForUserResponse.setAskerName(poll.getAsker().getName());
+                        }
+                        pollForUserResponseList.add(pollForUserResponse);
+                    }
+                }
+
+            } else {
+
+                Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatus(user , StatusType.PENDING , pageRequest);
+                for(QuestionAsked questionAsked : questionAskedList) {
+                    PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
+                    if(questionAsked.getPoll().getUserAnonymous() == 0) {
+                        pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
+                    }
+                    pollForUserResponseList.add(pollForUserResponse);
+                }
             }
 
             basePollResponse.setPollForUserResponses(pollForUserResponseList);
@@ -197,19 +215,24 @@ public class PollServiceImpl implements PollService {
             return basePollResponse;
         }
 
-        for(QuestionAskRequest questionAskRequest : createPollRequest.getToBeAskedFrom()) {
-            User askedTo = isValidUser(questionAskRequest.getAskedTo());
-            if(askedTo == null) {
-                basePollResponse.setMessage("Poll question asked not to a valid user");
-                return basePollResponse;
-            } else {
-                questionAskRequest.setAskedTo(askedTo);
+        if(createPollRequest.getToBeAskedFrom() != null) {
+            for(QuestionAskRequest questionAskRequest : createPollRequest.getToBeAskedFrom()) {
+                User askedTo = isValidUser(questionAskRequest.getAskedTo());
+                if(askedTo == null) {
+                    basePollResponse.setMessage("Poll question asked not to a valid user");
+                    return basePollResponse;
+                } else {
+                    questionAskRequest.setAskedTo(askedTo);
+                }
             }
         }
+
 
         Poll poll = new Poll();
         poll.setAsker(asker);
         poll.setGenre(GenreType.values()[createPollRequest.getGenreType()]);
+        poll.setPollOpenForAll(createPollRequest.getOpenForAll());
+        poll.setUserAnonymous(createPollRequest.getUserAnonymous());
         poll = getPollDao().save(poll);
 
         PollQuestion pollQuestion = new PollQuestion();
@@ -221,16 +244,19 @@ public class PollServiceImpl implements PollService {
         pollQuestion.setOptionE(createPollRequest.getOptionEText());
         pollQuestion.setPoll(poll);
 
-        pollQuestion = getPollQuestionDao().save(pollQuestion);
+        getPollQuestionDao().save(pollQuestion);
 
-        for(QuestionAskRequest questionAskRequest : createPollRequest.getToBeAskedFrom()) {
-            QuestionAsked questionAsked = new QuestionAsked();
-            questionAsked.setAnswerer(questionAskRequest.getAskedTo());
-            questionAsked.setAsker(asker);
-            questionAsked.setCreditAlloted(questionAsked.getCreditAlloted());
-            questionAsked.setPoll(poll);
-            getQuestionAskedDao().save(questionAsked);
+        if(createPollRequest.getToBeAskedFrom() != null) {
+            for(QuestionAskRequest questionAskRequest : createPollRequest.getToBeAskedFrom()) {
+                QuestionAsked questionAsked = new QuestionAsked();
+                questionAsked.setAnswerer(questionAskRequest.getAskedTo());
+                questionAsked.setAsker(asker);
+                questionAsked.setCreditAlloted(questionAsked.getCreditAlloted());
+                questionAsked.setPoll(poll);
+                getQuestionAskedDao().save(questionAsked);
+            }
         }
+
 
         asker.setQuestionCount(asker.getQuestionCount() + 1);
         getUserDao().save(asker);
@@ -256,8 +282,44 @@ public class PollServiceImpl implements PollService {
 
         QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswererAndStatus(poll , answerer , StatusType.PENDING);
 
-        if(questionAsked == null) {
-            basePollResponse.setMessage("Invalid answerer/poll/status combination");
+        if (questionAsked == null) {
+            // Checked if user can give answer to openForAll question or he has already answered it
+            if(poll.getPollOpenForAll() == 1 && poll.getStatus().ordinal() != StatusType.COMPLETED.ordinal()
+                    && poll.getStatus().ordinal() != StatusType.EXPIRED.ordinal()
+                    && getPollAnswerDao().findByPollAndAnswerer(poll, answerer) == null) {
+
+                PollAnswer pollAnswer = new PollAnswer();
+                pollAnswer.setAnswer(ResultType.values()[answerQuestionRequest.getAnswer()]);
+                pollAnswer.setAnswerer(answerer);
+                pollAnswer.setPoll(poll);
+
+                getPollAnswerDao().save(pollAnswer);
+
+                switch (ResultType.values()[answerQuestionRequest.getAnswer()]) {
+                    case OPTION_A:
+                        poll.setOptACount(poll.getOptACount() + 1);
+                        break;
+                    case OPTION_B:
+                        poll.setOptBCount(poll.getOptBCount() + 1);
+                        break;
+                    case OPTION_C:
+                        poll.setOptCCount(poll.getOptCCount() + 1);
+                        break;
+                    case OPTION_D:
+                        poll.setOptDCount(poll.getOptDCount() + 1);
+                        break;
+                    case OPTION_E:
+                        poll.setOptECount(poll.getOptECount() + 1);
+                        break;
+                }
+
+                answerer.setAnswerCount(answerer.getAnswerCount() + 1);
+                getUserDao().save(answerer);
+
+                basePollResponse.setMessage("Answered given successfully of " + "openForAll question");
+            } else {
+                basePollResponse.setMessage("Invalid answerer/poll/status combination");
+            }
             return basePollResponse;
         }
 
@@ -278,6 +340,26 @@ public class PollServiceImpl implements PollService {
             questionAsked.setStatus(StatusType.ANSWERED);
             getQuestionAskedDao().save(questionAsked);
 
+            switch (ResultType.values()[answerQuestionRequest.getAnswer()]) {
+                case OPTION_A:
+                    poll.setOptACount(poll.getOptACount() + 1);
+                    break;
+                case OPTION_B:
+                    poll.setOptBCount(poll.getOptBCount() + 1);
+                    break;
+                case OPTION_C:
+                    poll.setOptCCount(poll.getOptCCount() + 1);
+                    break;
+                case OPTION_D:
+                    poll.setOptDCount(poll.getOptDCount() + 1);
+                    break;
+                case OPTION_E:
+                    poll.setOptECount(poll.getOptECount() + 1);
+                    break;
+            }
+
+            getPollDao().save(poll);
+
             int credits = answerer.getCredits();
             answerer.setCredits(credits + questionAsked.getCreditAlloted());
             answerer.setAnswerCount(answerer.getAnswerCount() + 1);
@@ -292,7 +374,7 @@ public class PollServiceImpl implements PollService {
     }
 
     private User isValidUser(User tempUser) {
-        tempUser = getUserDao().findByEmailId(tempUser.getEmailId());
+        tempUser = getUserDao().findByEmailIdAndUserToken(tempUser.getEmailId() , tempUser.getUserToken());
         return tempUser;
     }
 

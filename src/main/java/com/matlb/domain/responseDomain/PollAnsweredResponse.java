@@ -14,6 +14,11 @@ public class PollAnsweredResponse {
     public PollAnsweredResponse(PollAnswer pollAnswer) {
         this.answerGiven = pollAnswer.getAnswer().ordinal();
         this.genre = pollAnswer.getPoll().getGenre().name();
+        if(pollAnswer.getPoll().getUserAnonymous() == 0) {
+            this.askerName = pollAnswer.getPoll().getAsker().getName();
+        } else {
+            this.askerName = "";
+        }
     }
 
     private String questionText;
@@ -31,6 +36,8 @@ public class PollAnsweredResponse {
     private String genre;
 
     private int answerGiven;
+
+    private String askerName;
 
     public String getQuestionText() {
         return questionText;
@@ -94,5 +101,13 @@ public class PollAnsweredResponse {
 
     public void setAnswerGiven(int answerGiven) {
         this.answerGiven = answerGiven;
+    }
+
+    public String getAskerName() {
+        return askerName;
+    }
+
+    public void setAskerName(String askerName) {
+        this.askerName = askerName;
     }
 }

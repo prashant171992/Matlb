@@ -39,10 +39,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse createUser(String email) {
+    public UserResponse createUser(String email , String token) {
         UserResponse userResponse;
-        if(findUserByEmail(email) == null){
-            User user = new User(email);
+        if(findUserByEmailIdAndToken(email , token) == null){
+            User user = new User(email , token);
             saveUser(user);
             sendMail(email);
             userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_SUCCESS);
@@ -95,6 +95,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByEmail(String email) {
         return getUserDao().findByEmailId(email);
+    }
+
+    @Override
+    public User findUserByEmailIdAndToken(String emailId, String token) {
+        return getUserDao().findByEmailIdAndUserToken(emailId , token);
     }
 
     @Override

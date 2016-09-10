@@ -54,6 +54,10 @@ public class User implements Serializable {
     @Column(name = "profile_pic")
     private String profilePic;
 
+    @NotNull
+    @Column(name = "token")
+    private String userToken;
+
     // Public methods
 
     public User() { }
@@ -64,6 +68,17 @@ public class User implements Serializable {
 
     public User(int userId) {
         this.id = userId;
+    }
+
+    public User(String emailId , String userToken) {
+        this.emailId = emailId;
+        this.userToken = userToken;
+    }
+
+    public User(String emailId , String userToken , String userName) {
+        this.emailId = emailId;
+        this.userToken = userToken;
+        this.name = userName;
     }
 
 
@@ -155,4 +170,11 @@ public class User implements Serializable {
         this.profilePic = profilePic;
     }
 
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
 }

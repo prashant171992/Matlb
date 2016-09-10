@@ -12,13 +12,14 @@ import java.util.List;
 public interface UserService {
 
     public List<User> findAllUsers();
-    public UserResponse createUser(String email);
+    public UserResponse createUser(String email , String token);
     public UserResponse createSubscriber(String email);
     public Subscriber findSubscriberById(Integer subscriberId);
     public User findUserById(Integer userId);
     public User saveUser(User user);
     public Subscriber saveSubscriber(Subscriber subscriber);
     public User findUserByEmail(String email);
+    public User findUserByEmailIdAndToken(String emailId, String token);
     public Subscriber findSubscriberByEmail(String email);
     public void deleteUser(Integer userId);
     public void sendMail(String emailId);
