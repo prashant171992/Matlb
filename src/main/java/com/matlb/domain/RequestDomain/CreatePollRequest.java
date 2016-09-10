@@ -13,7 +13,7 @@ public class CreatePollRequest {
 
     }
 
-    public CreatePollRequest(User asker, String pollQuestion, String optionAText, String optionBText, String optionCText, String optionDText, String optionEText, List<QuestionAskRequest> toBeAskedFrom, int validForMinutes, int genreType) {
+    public CreatePollRequest(User asker, String pollQuestion, String optionAText, String optionBText, String optionCText, String optionDText, String optionEText, List<QuestionAskRequest> toBeAskedFrom, int validForMinutes, int genreType, int openForAll, int userAnonymous) {
         this.asker = asker;
         this.pollQuestion = pollQuestion;
         this.optionAText = optionAText;
@@ -24,6 +24,8 @@ public class CreatePollRequest {
         this.toBeAskedFrom = toBeAskedFrom;
         this.validForMinutes = validForMinutes;
         this.genreType = genreType;
+        this.openForAll = openForAll;
+        this.userAnonymous = userAnonymous;
     }
 
     private User asker;
@@ -45,6 +47,10 @@ public class CreatePollRequest {
     private int validForMinutes;
 
     private int genreType;
+
+    private int openForAll;
+
+    private int userAnonymous;
 
     public User getAsker() {
         return asker;
@@ -124,5 +130,21 @@ public class CreatePollRequest {
 
     public void setGenreType(int genreType) {
         this.genreType = genreType;
+    }
+
+    public int getOpenForAll() {
+        return openForAll;
+    }
+
+    public void setOpenForAll(int openForAll) {
+        this.openForAll = openForAll;
+    }
+
+    public int getUserAnonymous() {
+        return userAnonymous;
+    }
+
+    public void setUserAnonymous(int userAnonymous) {
+        this.userAnonymous = userAnonymous;
     }
 }

@@ -39,6 +39,8 @@ public class PollForUserResponse {
 
     private Date validUpto;
 
+    private String askerName;
+
     public String getQuestionText() {
         return questionText;
     }
@@ -101,5 +103,13 @@ public class PollForUserResponse {
 
     public void setValidUpto(Date validUpto) {
         this.validUpto = validUpto;
+    }
+
+    public String getAskerName() {
+        return askerName;
+    }
+
+    public void setAskerName(String askerName) {
+        this.askerName = askerName;
     }
 }
