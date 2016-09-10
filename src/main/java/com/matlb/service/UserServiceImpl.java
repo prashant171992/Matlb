@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse createUser(String email , String token) {
+    public UserResponse createUser(String email , String token , String userName) {
         UserResponse userResponse;
         User user = findUserByEmailIdAndToken(email , token);
-        if(user == null){
-            user = new User(email , token);
+        if(user == null) {
+            user = new User(email , token , userName);
             user = saveUser(user);
             sendMail(email);
             userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_SUCCESS);

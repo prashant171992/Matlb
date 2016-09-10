@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserService {
 
     public List<User> findAllUsers();
-    public UserResponse createUser(String email , String token);
+    public UserResponse createUser(String email , String token , String userName);
     public UserResponse createSubscriber(String email);
     public Subscriber findSubscriberById(Integer subscriberId);
     public User findUserById(Integer userId);

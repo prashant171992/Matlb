@@ -81,7 +81,7 @@ public class MatlbController {
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/answer")
-    public BasePollResponse answerPollQuestion(@RequestBody AnswerQuestionRequest answerQuestionRequest) {
+        public BasePollResponse answerPollQuestion(@RequestBody AnswerQuestionRequest answerQuestionRequest) {
         return getPollService().answerPollQuestion(answerQuestionRequest);
     }
 
