@@ -41,7 +41,7 @@ public class MatlbController {
 
     @RequestMapping(method = RequestMethod.POST , value = "/user/add")
     public UserResponse createUser(@RequestBody User user) {
-        return getUserService().createUser(user.getEmailId() , user.getUserToken());
+        return getUserService().createUser(user.getEmailId() , user.getUserToken() , user.getName());
     }
 
     @RequestMapping(value = "/user/find/{id}")
