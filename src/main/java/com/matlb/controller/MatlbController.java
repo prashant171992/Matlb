@@ -5,6 +5,7 @@ import com.matlb.domain.User;
 import com.matlb.domain.requestDomain.AnswerQuestionRequest;
 import com.matlb.domain.requestDomain.CreatePollRequest;
 import com.matlb.domain.requestDomain.PollEnquiryRequest;
+import com.matlb.domain.requestDomain.ShowPollRequest;
 import com.matlb.domain.responseDomain.BasePollResponse;
 import com.matlb.domain.responseDomain.UserResponse;
 import com.matlb.service.PollService;
@@ -41,7 +42,7 @@ public class MatlbController {
 
     @RequestMapping(method = RequestMethod.POST , value = "/user/add")
     public UserResponse createUser(@RequestBody User user) {
-        return getUserService().createUser(user.getEmailId() , user.getUserToken() , user.getName());
+        return getUserService().createUser(user.getEmailId() , user.getUserToken());
     }
 
     @RequestMapping(value = "/user/find/{id}")
@@ -70,9 +71,9 @@ public class MatlbController {
         return getPollService().getPollAskedToByUser(user , pollId , pageNumber);
     }
 
-    @RequestMapping(method = RequestMethod.POST , value = "/poll/show/{pageNumber}/{openForAll}")
-    public BasePollResponse findPollToBeShownToUser(@RequestBody User user , @PathVariable Integer pageNumber , @PathVariable Integer openForAll) {
-        return getPollService().getPollToBeShownByUser(user , pageNumber , openForAll);
+    @RequestMapping(method = RequestMethod.POST , value = "/poll/show")
+    public BasePollResponse findPollToBeShownToUser(@RequestBody ShowPollRequest showPollRequest) {
+        return getPollService().getPollToBeShownByUser(showPollRequest);
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/poll/create")

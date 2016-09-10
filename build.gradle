@@ -44,6 +44,8 @@ dependencies {
 	compile("com.sun.jersey.contribs:jersey-multipart:1.19.1")
 	compile("org.springframework.boot:spring-boot-starter-amqp")
 	compile("com.fasterxml.jackson.core:jackson-databind:2.6.0")
+	compile 'com.google.apis:google-api-services-oauth2:v1-rev122-1.22.0'
+	compile 'com.google.http-client:google-http-client-gson:1.19.0'
 	runtime('mysql:mysql-connector-java')
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testCompile('org.springframework.boot:spring-boot-starter-test')

@@ -62,10 +62,6 @@ public class User implements Serializable {
 
     public User() { }
 
-    public User(String emailId){
-        this.emailId = emailId;
-    }
-
     public User(int userId) {
         this.id = userId;
     }
@@ -73,6 +69,10 @@ public class User implements Serializable {
     public User(String emailId , String userToken) {
         this.emailId = emailId;
         this.userToken = userToken;
+    }
+
+    public User(String emailId) {
+        this.emailId = emailId;
     }
 
     public User(String emailId , String userToken , String userName) {
