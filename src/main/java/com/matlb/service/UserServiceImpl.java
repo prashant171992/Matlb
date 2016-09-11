@@ -57,16 +57,20 @@ public class UserServiceImpl implements UserService {
         User user = authenticateSignInUser(email , token);
         if(user != null) {
 
-            String authToken = createUserAuthToken(token,user.getEmailId());
-            user.setAuthToken(authToken);
+            User tempUser = findUserByEmail(user.getEmailId());
 
-            if((findUserByEmail(user.getEmailId()) == null)) {
+            String authToken = createUserAuthToken(token,user.getEmailId());
+
+            if(tempUser == null) {
+                user.setAuthToken(authToken);
                 user = saveUser(user);
                 sendMail(email);
                 userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_SUCCESS);
                 userResponse.setUserCreated(true);
                 userResponse.setUser(user);
             } else {
+                user = tempUser;
+                user.setAuthToken(authToken);
                 user = saveUser(user);
                 userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_FAILURE);
                 userResponse.setUserCreated(false);
@@ -131,6 +135,7 @@ public class UserServiceImpl implements UserService {
                 "|" + email ;
 
         StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
+        jasypt.setPassword(dummyToken);
 
         // this is the authentication token user will send in order to use the web service
         return jasypt.encrypt(key);
