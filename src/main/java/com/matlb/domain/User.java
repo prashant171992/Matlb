@@ -54,7 +54,6 @@ public class User implements Serializable {
     @Column(name = "profile_pic")
     private String profilePic;
 
-    @NotNull
     @Column(name = "token")
     private String userToken;
 
