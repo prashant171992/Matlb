@@ -54,8 +54,13 @@ public class User implements Serializable {
     @Column(name = "profile_pic")
     private String profilePic;
 
-    @Column(name = "token")
-    private String userToken;
+    @Column(name = "auth_token")
+    private String authToken;
+
+    @Column(name = "gcm_token")
+    private String gcmToken;
+
+
 
     // Public methods
 
@@ -65,19 +70,19 @@ public class User implements Serializable {
         this.id = userId;
     }
 
-    public User(String emailId , String userToken) {
+    public User(String emailId , String authToken) {
         this.emailId = emailId;
-        this.userToken = userToken;
+        this.authToken = authToken;
     }
 
     public User(String emailId) {
         this.emailId = emailId;
     }
 
-    public User(String emailId , String userToken , String userName) {
+    public User(String emailId , String authToken , String gcmToken) {
         this.emailId = emailId;
-        this.userToken = userToken;
-        this.name = userName;
+        this.authToken = authToken;
+        this.gcmToken = gcmToken;
     }
 
 
@@ -169,11 +174,19 @@ public class User implements Serializable {
         this.profilePic = profilePic;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public String getAuthToken() {
+        return authToken;
     }
 
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public String getGcmToken() {
+        return gcmToken;
+    }
+
+    public void setGcmToken(String gcmToken) {
+        this.gcmToken = gcmToken;
     }
 }

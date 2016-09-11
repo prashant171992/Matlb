@@ -14,16 +14,16 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by prassingh on 3/22/16.
@@ -54,9 +54,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse createUser(String email , String token) {
         UserResponse userResponse;
-        User user = authenticateUser(email , token);
+        User user = authenticateSignInUser(email , token);
         if(user != null) {
-            // Handle the condition of authenticated Prashant(me) vs testing Prashant
+
+            String authToken = createUserAuthToken(token,user.getEmailId());
+            user.setAuthToken(authToken);
+
             if((findUserByEmail(user.getEmailId()) == null)) {
                 user = saveUser(user);
                 sendMail(email);
@@ -64,6 +67,7 @@ public class UserServiceImpl implements UserService {
                 userResponse.setUserCreated(true);
                 userResponse.setUser(user);
             } else {
+                user = saveUser(user);
                 userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_FAILURE);
                 userResponse.setUserCreated(false);
                 userResponse.setUser(user);
@@ -77,7 +81,7 @@ public class UserServiceImpl implements UserService {
         return userResponse;
     }
 
-    public User authenticateUser(String email , String userToken){
+    public User authenticateSignInUser(String email , String userToken){
         String returnVal;
         User user = new User();
         NetHttpTransport transport = new NetHttpTransport();
@@ -119,6 +123,19 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    public String createUserAuthToken(String token , String email){
+
+        String key = UUID.randomUUID().toString().toUpperCase() +
+                "|" + token +
+                "|" + email ;
+
+        StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
+
+        // this is the authentication token user will send in order to use the web service
+        return jasypt.encrypt(key);
+    }
+
 
     @Override
     public UserResponse createSubscriber(String email) {
@@ -163,8 +180,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByEmailIdAndToken(String emailId, String token) {
-        return getUserDao().findByEmailIdAndUserToken(emailId , token);
+    public User findUserByEmailIdAndAuthToken(String emailId, String token) {
+        return getUserDao().findByEmailIdAndAuthToken(emailId , token);
     }
 
     @Override

@@ -20,9 +20,10 @@ public interface UserService {
     public User saveUser(User user);
     public Subscriber saveSubscriber(Subscriber subscriber);
     public User findUserByEmail(String email);
-    public User findUserByEmailIdAndToken(String emailId, String token);
+    public User findUserByEmailIdAndAuthToken(String emailId, String token);
     public Subscriber findSubscriberByEmail(String email);
     public void sendMail(String emailId);
-    public User authenticateUser(String email , String userToken);
+    public User authenticateSignInUser(String email , String userToken);
+    public String createUserAuthToken(String token , String email);
 
 }

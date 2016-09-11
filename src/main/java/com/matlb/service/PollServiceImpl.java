@@ -164,10 +164,7 @@ public class PollServiceImpl implements PollService {
         User user = showPollRequest.getUser();
 
         if((user = isValidUser(user)) != null) {
-            if(showPollRequest.getGcmToken() != null) {
-                user.setUserToken(showPollRequest.getGcmToken());
-                getUserService().saveUser(user);
-            }
+            getUserService().saveUser(user);
             basePollResponse = new BasePollResponse("response okay !");
 
             List<PollForUserResponse> pollForUserResponseList = new ArrayList<PollForUserResponse>();
@@ -376,11 +373,9 @@ public class PollServiceImpl implements PollService {
     }
 
     private User isValidUser(User tempUser) {
-        User user = getUserService().authenticateUser(tempUser.getEmailId() , tempUser.getUserToken());
-        if(user == null){
-            return null;
-        }
-        tempUser = getUserDao().findByEmailId(tempUser.getEmailId());
+        String gcmToken = tempUser.getGcmToken();
+        tempUser = getUserService().findUserByEmailIdAndAuthToken(tempUser.getEmailId() , tempUser.getAuthToken());
+        tempUser.setGcmToken(gcmToken);
         return tempUser;
     }
 

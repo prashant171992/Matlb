@@ -12,5 +12,5 @@ import java.util.List;
 public interface UserDao extends JpaRepository<User,Integer>{
 
     User findByEmailId(String email);
-    User findByEmailIdAndUserToken(String email , String token);
+    User findByEmailIdAndAuthToken(String email , String token);
 }

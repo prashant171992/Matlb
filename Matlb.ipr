@@ -105,8 +105,9 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava-jdk5:17.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client:1.22.0" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.19.0/b3cdefb990d5212bb2a130525b20e2c44aeffc4c/google-http-client-gson-1.19.0.jar" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar" />
+            <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.19.0" />
+            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.3.1" />
+            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.jasypt/jasypt/1.9.0/857a1a55a81641c31b2a9b4b292120c1d4432bd/jasypt-1.9.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -218,8 +219,9 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava-jdk5:17.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client:1.22.0" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.19.0/b3cdefb990d5212bb2a130525b20e2c44aeffc4c/google-http-client-gson-1.19.0.jar" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar" />
+            <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.19.0" />
+            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.3.1" />
+            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.jasypt/jasypt/1.9.0/857a1a55a81641c31b2a9b4b292120c1d4432bd/jasypt-1.9.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -915,6 +917,15 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.2.4.Final/b02d7b80cdadbfc51106252238fc1a667c8287eb/hibernate-validator-5.2.4.Final-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: org.jasypt:jasypt:1.9.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.jasypt/jasypt/1.9.0/857a1a55a81641c31b2a9b4b292120c1d4432bd/jasypt-1.9.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.jasypt/jasypt/1.9.0/7345fb69a07951acddfd3e0a0989aac52f9f655/jasypt-1.9.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.javassist:javassist:3.18.1-GA">
