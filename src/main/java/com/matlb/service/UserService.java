@@ -3,6 +3,7 @@ package com.matlb.service;
 import com.matlb.domain.Subscriber;
 import com.matlb.domain.User;
 import com.matlb.domain.responseDomain.UserResponse;
+import org.hibernate.validator.constraints.Email;
 
 import java.util.List;
 

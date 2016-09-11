@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         User user = authenticateUser(email , token);
         if(user != null) {
             // Handle the condition of authenticated Prashant(me) vs testing Prashant
-            if((findUserByEmail(user.getEmailId()) == null) || (Objects.equals(user.getEmailId(), "prashant171992@gmail.com") && !token.equals(dummyToken))) {
+            if((findUserByEmail(user.getEmailId()) == null)) {
                 user = saveUser(user);
                 sendMail(email);
                 userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_SUCCESS);
@@ -78,9 +78,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public User authenticateUser(String email , String userToken){
-        if(Objects.equals(email, "prashant171992@gmail.com") && userToken.equals(dummyToken)){
-            return new User(email);
-        }
         String returnVal;
         User user = new User();
         NetHttpTransport transport = new NetHttpTransport();
