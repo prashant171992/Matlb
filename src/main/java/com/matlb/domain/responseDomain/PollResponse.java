@@ -29,6 +29,8 @@ public class PollResponse {
         this.optionEText = poll.getPollQuestion().getOptionE();
         this.peopleAsked = 0;
         this.creditsUsed = 0;
+        this.userAnonymous = poll.getUserAnonymous();
+        this.pollOpenForAll = poll.getPollOpenForAll();
     }
 
     private String questionText;
@@ -60,6 +62,10 @@ public class PollResponse {
     private int peopleAsked;
 
     private int creditsUsed;
+
+    private int pollOpenForAll;
+
+    private int userAnonymous;
 
     public String getQuestionText() {
         return questionText;
@@ -179,5 +185,21 @@ public class PollResponse {
 
     public void setOptionEText(String optionEText) {
         this.optionEText = optionEText;
+    }
+
+    public int getPollOpenForAll() {
+        return pollOpenForAll;
+    }
+
+    public void setPollOpenForAll(int pollOpenForAll) {
+        this.pollOpenForAll = pollOpenForAll;
+    }
+
+    public int getUserAnonymous() {
+        return userAnonymous;
+    }
+
+    public void setUserAnonymous(int userAnonymous) {
+        this.userAnonymous = userAnonymous;
     }
 }
