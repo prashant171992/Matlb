@@ -19,15 +19,10 @@ import java.io.InputStreamReader;
  */
 public class NetworkCall {
 
-    @Value("${notification_url}")
-    private String url;
-
-    @Value("${authorization_key}")
-    private String authorizationKey;
 
     static HttpClient httpClient = HttpClientBuilder.create().build();;
 
-    private static void makeGetRequest(String url) throws IOException {
+    public static void makeGetRequest(String url) throws IOException {
         HttpGet request = new HttpGet(url);
 
         HttpResponse response = httpClient.execute(request);
@@ -49,7 +44,7 @@ public class NetworkCall {
 
     }
 
-    public void makePostRequest(Notification notification) throws IOException {
+    public static void makePostRequest(Notification notification, String url, String authorizationKey) throws IOException {
 
         HttpPost post = new HttpPost(url);
 

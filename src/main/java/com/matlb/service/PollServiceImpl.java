@@ -6,6 +6,7 @@ import com.matlb.domain.*;
 import com.matlb.domain.requestDomain.*;
 import com.matlb.domain.responseDomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,13 @@ public class PollServiceImpl implements PollService {
 
     @Autowired
     private UserService userService;
+
+    @Value("${notification_url}")
+    private String url;
+
+    @Value("${authorization_key}")
+    private String authorizationKey;
+
 
     @Override
     public BasePollResponse getPollsCreatedByUser(PollEnquiryRequest pollEnquiryRequest, int pageNum) {
@@ -291,8 +299,7 @@ public class PollServiceImpl implements PollService {
         notification.setData(notificationData);
 
         try {
-            NetworkCall networkCall = new NetworkCall();
-            networkCall.makePostRequest(notification);
+            NetworkCall.makePostRequest(notification, url, authorizationKey);
         } catch (IOException e) {
             e.printStackTrace();
         }
