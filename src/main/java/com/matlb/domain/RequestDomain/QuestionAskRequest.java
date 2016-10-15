@@ -11,20 +11,20 @@ public class QuestionAskRequest {
 
     }
 
-    public QuestionAskRequest(Integer phoneNumber, int creditAsBait) {
+    public QuestionAskRequest(Long phoneNumber, int creditAsBait) {
         this.phoneNumber = phoneNumber;
         this.creditAsBait = creditAsBait;
     }
 
 
-    private Integer phoneNumber;
+    private Long phoneNumber;
     private int creditAsBait;
 
-    public Integer getPhoneNumber() {
+    public Long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
