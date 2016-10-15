@@ -13,14 +13,14 @@ public class FriendsPresentRequest {
 
     }
 
-    public FriendsPresentRequest(User user, List<Integer> phoneNumbers) {
+    public FriendsPresentRequest(User user, List<Long> phoneNumbers) {
         this.user = user;
         this.phoneNumbers = phoneNumbers;
     }
 
     private User user;
 
-    private List<Integer> phoneNumbers;
+    private List<Long> phoneNumbers;
 
     public User getUser() {
         return user;
@@ -30,11 +30,11 @@ public class FriendsPresentRequest {
         this.user = user;
     }
 
-    public List<Integer> getPhoneNumbers() {
+    public List<Long> getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public void setPhoneNumbers(List<Integer> phoneNumbers) {
+    public void setPhoneNumbers(List<Long> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 }

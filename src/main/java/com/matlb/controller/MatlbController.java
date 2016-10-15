@@ -48,7 +48,7 @@ public class MatlbController {
     }
 
     @RequestMapping(method = RequestMethod.POST , value = "/user/update/mobile/{mobileNumber}")
-    public UserResponse verifyMobileNumber(@PathVariable Integer mobileNumber , @RequestBody User user) {
+    public UserResponse verifyMobileNumber(@PathVariable Long mobileNumber , @RequestBody User user) {
         return getUserService().updateMobileNumber(user , mobileNumber);
     }
 
