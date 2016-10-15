@@ -15,7 +15,7 @@ public class FriendsPresentResponse extends BaseResponse {
 
     private User user;
 
-    private List<Integer> phoneNumberList;
+    private List<Long> phoneNumberList;
 
     public User getUser() {
         return user;
@@ -25,11 +25,11 @@ public class FriendsPresentResponse extends BaseResponse {
         this.user = user;
     }
 
-    public List<Integer> getPhoneNumberList() {
+    public List<Long> getPhoneNumberList() {
         return phoneNumberList;
     }
 
-    public void setPhoneNumberList(List<Integer> phoneNumberList) {
+    public void setPhoneNumberList(List<Long> phoneNumberList) {
         this.phoneNumberList = phoneNumberList;
     }
 }

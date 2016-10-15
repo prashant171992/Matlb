@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserDao extends JpaRepository<User,Integer>{
 
     User findByEmailId(String email);
-    User findByPhoneNumber(Integer phoneNumber);
+    User findByPhoneNumber(Long phoneNumber);
     User findByEmailIdAndAuthToken(String email , String token);
-    List<User> findByPhoneNumberIn(List<Integer> phoneNumberList);
+    List<User> findByPhoneNumberIn(List<Long> phoneNumberList);
 }

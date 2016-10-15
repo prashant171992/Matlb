@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateMobileNumber(User user , Integer mobileNumber) {
+    public UserResponse updateMobileNumber(User user , Long mobileNumber) {
 
         UserResponse userResponse;
         User user1 = findUserByEmailIdAndAuthToken(user.getEmailId() , user.getAuthToken());
@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService {
         FriendsPresentResponse friendsPresentResponse ;
 
         User user = findUserByEmailIdAndAuthToken(friendsPresentRequest.getUser().getEmailId() , friendsPresentRequest.getUser().getAuthToken());
-        List<Integer> phoneNumbersVerified = new ArrayList<>();
+        List<Long> phoneNumbersVerified = new ArrayList<>();
 
         if(user != null) {
             List<User> usersWithValidPhoneNumbers = getUserDao().findByPhoneNumberIn(friendsPresentRequest.getPhoneNumbers());
@@ -250,7 +250,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByMobileNumber(Integer phoneNumber) {
+    public User findByMobileNumber(Long phoneNumber) {
         return getUserDao().findByPhoneNumber(phoneNumber);
     }
 
