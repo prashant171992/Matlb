@@ -38,7 +38,7 @@ public class User implements Serializable {
     private int credits = 0;
 
     @Column(name = "phone_number")
-    private Integer phoneNumber = null;
+    private Long phoneNumber = null;
 
     @NotNull
     @Column(name = "question_count")
@@ -134,11 +134,11 @@ public class User implements Serializable {
         this.credits = credits;
     }
 
-    public Integer getPhoneNumber() {
+    public Long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
