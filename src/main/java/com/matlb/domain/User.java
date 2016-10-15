@@ -38,7 +38,7 @@ public class User implements Serializable {
     private int credits = 0;
 
     @Column(name = "phone_number")
-    private Integer phoneNumber = 99999999;
+    private Integer phoneNumber = null;
 
     @NotNull
     @Column(name = "question_count")
