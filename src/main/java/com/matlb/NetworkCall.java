@@ -20,10 +20,10 @@ import java.io.InputStreamReader;
 public class NetworkCall {
 
     @Value("${notification_url}")
-    private static String url;
+    private String url;
 
     @Value("${authorization_key}")
-    private static String authorizationKey;
+    private String authorizationKey;
 
     static HttpClient httpClient = HttpClientBuilder.create().build();;
 
@@ -49,7 +49,7 @@ public class NetworkCall {
 
     }
 
-    public static void makePostRequest(Notification notification) throws IOException {
+    public void makePostRequest(Notification notification) throws IOException {
 
         HttpPost post = new HttpPost(url);
 

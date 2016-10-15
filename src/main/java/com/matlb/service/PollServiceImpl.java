@@ -291,7 +291,8 @@ public class PollServiceImpl implements PollService {
         notification.setData(notificationData);
 
         try {
-            NetworkCall.makePostRequest(notification);
+            NetworkCall networkCall = new NetworkCall();
+            networkCall.makePostRequest(notification);
         } catch (IOException e) {
             e.printStackTrace();
         }

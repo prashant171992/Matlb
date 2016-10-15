@@ -12,15 +12,15 @@ public class Notification {
 
     }
 
-    private List<String> registrationIds = new ArrayList<String>();
+    private List<String> registration_ids = new ArrayList<String>();
     private NotificationData data;
 
     public List<String> getRegistrationIds() {
-        return registrationIds;
+        return registration_ids;
     }
 
     public void setRegistrationIds(List<String> registrationIds) {
-        this.registrationIds = registrationIds;
+        this.registration_ids = registrationIds;
     }
 
     public NotificationData getData() {
