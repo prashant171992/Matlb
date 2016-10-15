@@ -3,6 +3,7 @@ package com.matlb.domain.responseDomain;
 import com.matlb.domain.Poll;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by prassingh on 8/21/16.
@@ -27,10 +28,10 @@ public class PollResponse {
         this.optionCText = poll.getPollQuestion().getOptionC();
         this.optionDText = poll.getPollQuestion().getOptionD();
         this.optionEText = poll.getPollQuestion().getOptionE();
-        this.peopleAsked = 0;
         this.creditsUsed = 0;
         this.userAnonymous = poll.getUserAnonymous();
         this.pollOpenForAll = poll.getPollOpenForAll();
+        this.questionStatus = poll.getStatus().ordinal();
     }
 
     private String questionText;
@@ -59,13 +60,15 @@ public class PollResponse {
 
     private Date validTill;
 
-    private int peopleAsked;
+    private List<PeopleAnsweredOrNot> peopleAnsweredOrNotList;
 
     private int creditsUsed;
 
     private int pollOpenForAll;
 
     private int userAnonymous;
+
+    private int questionStatus;
 
     public String getQuestionText() {
         return questionText;
@@ -131,14 +134,6 @@ public class PollResponse {
         this.validTill = validTill;
     }
 
-    public int getPeopleAsked() {
-        return peopleAsked;
-    }
-
-    public void setPeopleAsked(int peopleAsked) {
-        this.peopleAsked = peopleAsked;
-    }
-
     public int getCreditsUsed() {
         return creditsUsed;
     }
@@ -201,5 +196,21 @@ public class PollResponse {
 
     public void setUserAnonymous(int userAnonymous) {
         this.userAnonymous = userAnonymous;
+    }
+
+    public int getQuestionStatus() {
+        return questionStatus;
+    }
+
+    public void setQuestionStatus(int questionStatus) {
+        this.questionStatus = questionStatus;
+    }
+
+    public List<PeopleAnsweredOrNot> getPeopleAnsweredOrNotList() {
+        return peopleAnsweredOrNotList;
+    }
+
+    public void setPeopleAnsweredOrNotList(List<PeopleAnsweredOrNot> peopleAnsweredOrNotList) {
+        this.peopleAnsweredOrNotList = peopleAnsweredOrNotList;
     }
 }

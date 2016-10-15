@@ -18,10 +18,14 @@ public interface PollService {
 
     public BasePollResponse getPollAskedToByUser(User user , int pollId , int pageNum);
 
-    public BasePollResponse getPollToBeShownByUser(ShowPollRequest showPollRequest);
+    public BasePollResponse getPollToBeShownToUser(ShowPollRequest showPollRequest);
 
     public BasePollResponse createPoll(CreatePollRequest createPollRequest);
 
     public BasePollResponse answerPollQuestion(AnswerQuestionRequest answerQuestionRequest);
+
+    public BasePollResponse updatePollStatus(User user, int pollId, int status);
+
+    public BasePollResponse getPollDetailsById(User user, int pollId);
 
 }

@@ -9,6 +9,8 @@ import com.matlb.dao.UserDao;
 import com.matlb.domain.MatlbStringConstants;
 import com.matlb.domain.Subscriber;
 import com.matlb.domain.User;
+import com.matlb.domain.requestDomain.FriendsPresentRequest;
+import com.matlb.domain.responseDomain.FriendsPresentResponse;
 import com.matlb.domain.responseDomain.UserResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -21,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -128,6 +131,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public String createUserAuthToken(String token , String email){
 
         String key = UUID.randomUUID().toString().toUpperCase() +
@@ -139,6 +143,67 @@ public class UserServiceImpl implements UserService {
 
         // this is the authentication token user will send in order to use the web service
         return jasypt.encrypt(key);
+    }
+
+    @Override
+    public UserResponse updateMobileNumber(User user , Integer mobileNumber) {
+
+        UserResponse userResponse;
+        User user1 = findUserByEmailIdAndAuthToken(user.getEmailId() , user.getAuthToken());
+
+        if(user1 != null) {
+            user1.setPhoneNumber(mobileNumber);
+            saveUser(user1);
+            userResponse = new UserResponse(MatlbStringConstants.MOBILE_NUMBER_UPDATED);
+        } else {
+            userResponse = new UserResponse(MatlbStringConstants.NO_USER_FOUND);
+        }
+        userResponse.setUserCreated(false);
+        userResponse.setUser(user);
+        return userResponse;
+    }
+
+    @Override
+    public UserResponse updateGCMToken(User user) {
+        UserResponse userResponse;
+        User user1 = findUserByEmailIdAndAuthToken(user.getEmailId() , user.getAuthToken());
+
+        if(user1 != null) {
+            user1.setGcmToken(user.getGcmToken());
+            saveUser(user1);
+            userResponse = new UserResponse(MatlbStringConstants.GCM_TOKEN_UPDATED);
+        } else {
+            userResponse = new UserResponse(MatlbStringConstants.NO_USER_FOUND);
+        }
+        userResponse.setUserCreated(false);
+        userResponse.setUser(user);
+        return userResponse;
+    }
+
+    @Override
+    public FriendsPresentResponse verifyMobileNumbers(FriendsPresentRequest friendsPresentRequest){
+
+        FriendsPresentResponse friendsPresentResponse ;
+
+        User user = findUserByEmailIdAndAuthToken(friendsPresentRequest.getUser().getEmailId() , friendsPresentRequest.getUser().getAuthToken());
+        List<Integer> phoneNumbersVerified = new ArrayList<>();
+
+        if(user != null) {
+            List<User> usersWithValidPhoneNumbers = getUserDao().findByPhoneNumberIn(friendsPresentRequest.getPhoneNumbers());
+            if(usersWithValidPhoneNumbers != null && !usersWithValidPhoneNumbers.isEmpty()) {
+                for(User user1 : usersWithValidPhoneNumbers) {
+                    phoneNumbersVerified.add(user1.getPhoneNumber());
+                }
+            }
+            friendsPresentResponse = new FriendsPresentResponse(MatlbStringConstants.FRIENDS_FOUND);
+            friendsPresentResponse.setPhoneNumberList(phoneNumbersVerified);
+        } else {
+            friendsPresentResponse = new FriendsPresentResponse(MatlbStringConstants.NO_USER_FOUND);
+            friendsPresentResponse.setUser(null);
+            friendsPresentResponse.setPhoneNumberList(phoneNumbersVerified);
+        }
+
+        return friendsPresentResponse;
     }
 
 
@@ -182,6 +247,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByEmail(String email) {
         return getUserDao().findByEmailId(email);
+    }
+
+    @Override
+    public User findByMobileNumber(Integer phoneNumber) {
+        return getUserDao().findByPhoneNumber(phoneNumber);
     }
 
     @Override

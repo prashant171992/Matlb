@@ -21,7 +21,10 @@ public class PollForUserResponse {
         this.optionDText = pollQuestion.getOptionD();
         this.optionEText = pollQuestion.getOptionE();
         this.validUpto = pollQuestion.getPoll().getValidUpto();
+        this.pollId = pollQuestion.getId();
     }
+
+    private int pollId;
 
     private String questionText;
 
@@ -111,5 +114,13 @@ public class PollForUserResponse {
 
     public void setAskerName(String askerName) {
         this.askerName = askerName;
+    }
+
+    public int getPollId() {
+        return pollId;
+    }
+
+    public void setPollId(int pollId) {
+        this.pollId = pollId;
     }
 }

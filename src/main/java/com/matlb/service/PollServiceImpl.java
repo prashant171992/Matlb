@@ -1,5 +1,6 @@
 package com.matlb.service;
 
+import com.matlb.NetworkCall;
 import com.matlb.dao.*;
 import com.matlb.domain.*;
 import com.matlb.domain.requestDomain.*;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class PollServiceImpl implements PollService {
 
         if((pollEnquiryRequest.user = isValidUser(pollEnquiryRequest.getUser())) != null) {
 
-            basePollResponse = new BasePollResponse("response okay !");
+            basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
             Page<Poll> poll;
 
@@ -65,11 +67,13 @@ public class PollServiceImpl implements PollService {
             for(Poll poller : poll){
                 PollResponse pollResponse = new PollResponse(poller);
                 List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poller,pollEnquiryRequest.getUser());
-                pollResponse.setPeopleAsked(questionAskedList.size());
+                List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
 
                 int creditsUsed = 0;
 
                 for(QuestionAsked question : questionAskedList) {
+                    PeopleAnsweredOrNot peopleAnsweredOrNot = new PeopleAnsweredOrNot(question);
+                    peopleAnsweredOrNotList.add(peopleAnsweredOrNot);
                     creditsUsed+=question.getCreditAlloted();  // not considering the status of questionAsked
                 }
 
@@ -95,9 +99,9 @@ public class PollServiceImpl implements PollService {
 
         BasePollResponse basePollResponse ;
 
-        if((pollEnquiryRequest.user = isValidUser(pollEnquiryRequest.getUser())) != null){
-            basePollResponse = new BasePollResponse("response okay !");
+        if((pollEnquiryRequest.user = isValidUser(pollEnquiryRequest.getUser())) != null) {
 
+            basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
             Page<PollAnswer> pollAnswerList = getPollAnswerDao().findByAnswerer(pollEnquiryRequest.user , pageRequest);
 
@@ -105,6 +109,16 @@ public class PollServiceImpl implements PollService {
 
             for(PollAnswer pollAnswer : pollAnswerList) {
                 PollAnsweredResponse pollAnsweredResponse = new PollAnsweredResponse(pollAnswer);
+
+                // for fetching credits , if any
+                QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswerer(pollAnswer.getPoll(), pollEnquiryRequest.getUser());
+                if(questionAsked != null) {
+                    pollAnsweredResponse.setCreditsEarned(questionAsked.getCreditAlloted());
+                } else {
+                    pollAnsweredResponse.setCreditsEarned(0);
+                }
+
+                pollAnsweredResponse.setCorrectAnswer(findPollAnswer(pollAnswer.getPoll()));
 
                 PollQuestion pollQuestion = getPollQuestionDao().findByPoll(pollAnswer.getPoll());
 
@@ -157,7 +171,7 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public BasePollResponse getPollToBeShownByUser(ShowPollRequest showPollRequest) {
+    public BasePollResponse getPollToBeShownToUser(ShowPollRequest showPollRequest) {
         PageRequest pageRequest = new PageRequest(showPollRequest.getPageNumber() , PAGE_SIZE);
 
         BasePollResponse basePollResponse ;
@@ -165,7 +179,7 @@ public class PollServiceImpl implements PollService {
 
         if((user = isValidUser(user)) != null) {
             getUserService().saveUser(user);
-            basePollResponse = new BasePollResponse("response okay !");
+            basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
             List<PollForUserResponse> pollForUserResponseList = new ArrayList<PollForUserResponse>();
 
@@ -173,10 +187,12 @@ public class PollServiceImpl implements PollService {
 
                 Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
                 for(Poll poll : polls) {
-                    if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswererAndStatus(poll, user , StatusType.ALL) == null) {
+                    if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
                         PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
                         if(poll.getUserAnonymous() == 0) {
                             pollForUserResponse.setAskerName(poll.getAsker().getName());
+                        } else {
+                            pollForUserResponse.setAskerName(null);
                         }
                         pollForUserResponseList.add(pollForUserResponse);
                     }
@@ -189,6 +205,8 @@ public class PollServiceImpl implements PollService {
                     PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
                     if(questionAsked.getPoll().getUserAnonymous() == 0) {
                         pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
+                    } else {
+                        pollForUserResponse.setAskerName(null);
                     }
                     pollForUserResponseList.add(pollForUserResponse);
                 }
@@ -197,7 +215,7 @@ public class PollServiceImpl implements PollService {
             basePollResponse.setPollForUserResponses(pollForUserResponseList);
 
         } else {
-            basePollResponse = new BasePollResponse("sorry , user not found !");
+            basePollResponse = new BasePollResponse(MatlbStringConstants.NO_USER_FOUND);
         }
         return basePollResponse;
     }
@@ -210,18 +228,16 @@ public class PollServiceImpl implements PollService {
         User asker = isValidUser(createPollRequest.getAsker());
 
         if(asker == null) {
-            basePollResponse.setMessage("Poll create request not from a valid user");
+            basePollResponse.setMessage(MatlbStringConstants.POLL_REQUEST_INVALID_USER);
             return basePollResponse;
         }
 
         if(createPollRequest.getToBeAskedFrom() != null) {
             for(QuestionAskRequest questionAskRequest : createPollRequest.getToBeAskedFrom()) {
-                User askedTo = isValidUser(questionAskRequest.getAskedTo());
+                User askedTo = getUserService().findByMobileNumber(questionAskRequest.getPhoneNumber());
                 if(askedTo == null) {
-                    basePollResponse.setMessage("Poll question asked not to a valid user");
+                    basePollResponse.setMessage(MatlbStringConstants.POLL_REQUEST_NOT_TO_VALID_USER);
                     return basePollResponse;
-                } else {
-                    questionAskRequest.setAskedTo(askedTo);
                 }
             }
         }
@@ -245,22 +261,45 @@ public class PollServiceImpl implements PollService {
 
         getPollQuestionDao().save(pollQuestion);
 
+        NotificationData notificationData = new NotificationData();
+        if (createPollRequest.getUserAnonymous() == 1) {
+            notificationData.setAsker(MatlbStringConstants.POLL_ASKED_ANONYMOUS);
+        } else {
+            notificationData.setAsker(asker.getName() + MatlbStringConstants.POLL_ASKED_NON_ANONYMOUS);
+        }
+        notificationData.setMessage(pollQuestion.getQuestionText());
+        notificationData.setPollId(poll.getId());
+
+        Notification notification = new Notification();
+        notification.setData(notificationData);
+        List<String> gcmIds = new ArrayList<>();
+
         if(createPollRequest.getToBeAskedFrom() != null) {
             for(QuestionAskRequest questionAskRequest : createPollRequest.getToBeAskedFrom()) {
                 QuestionAsked questionAsked = new QuestionAsked();
-                questionAsked.setAnswerer(questionAskRequest.getAskedTo());
+                User answerer = getUserService().findByMobileNumber(questionAskRequest.getPhoneNumber());
+                questionAsked.setAnswerer(answerer);
                 questionAsked.setAsker(asker);
                 questionAsked.setCreditAlloted(questionAsked.getCreditAlloted());
                 questionAsked.setPoll(poll);
+                gcmIds.add(answerer.getGcmToken());
                 getQuestionAskedDao().save(questionAsked);
             }
         }
 
+        notification.setRegistrationIds(gcmIds);
+        notification.setData(notificationData);
+
+        try {
+            NetworkCall.makePostRequest(notification);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         asker.setQuestionCount(asker.getQuestionCount() + 1);
         getUserDao().save(asker);
 
-        basePollResponse.setMessage("poll created successfully!");
+        basePollResponse.setMessage(MatlbStringConstants.POLL_CREATED_SUCCESSFULLY);
         return basePollResponse;
 
     }
@@ -315,7 +354,9 @@ public class PollServiceImpl implements PollService {
                 answerer.setAnswerCount(answerer.getAnswerCount() + 1);
                 getUserDao().save(answerer);
 
-                basePollResponse.setMessage("Answered given successfully of " + "openForAll question");
+                getPollDao().save(poll);
+
+                basePollResponse.setMessage(MatlbStringConstants.POLL_FOR_ALL_ANSWERED_SUCCESSFULLY);
             } else {
                 basePollResponse.setMessage("Invalid answerer/poll/status combination");
             }
@@ -365,18 +406,92 @@ public class PollServiceImpl implements PollService {
 
             getUserDao().save(answerer);
 
-            basePollResponse.setMessage("Credits received " + questionAsked.getCreditAlloted());
+            basePollResponse.setMessage(MatlbStringConstants.CREDITS_RECEIVED + questionAsked.getCreditAlloted());
         }
 
         return basePollResponse;
 
     }
 
+    @Override
+    public BasePollResponse updatePollStatus(User user, int pollId, int status) {
+        BasePollResponse basePollResponse = new BasePollResponse();
+
+        User answerer = isValidUser(user);
+
+        Poll poll = getPollDao().findById(pollId);
+
+        if(answerer == null || poll == null) {
+            basePollResponse.setMessage("Invalid user or poll");
+            return basePollResponse;
+        }
+
+        poll.setStatus(StatusType.values()[status]);
+
+        getPollDao().save(poll);
+
+        basePollResponse.setMessage(MatlbStringConstants.POLL_STATUS_UPDATE_SUCCESSFUL);
+        return basePollResponse;
+    }
+
+    @Override
+    public BasePollResponse getPollDetailsById(User user, int pollId) {
+        BasePollResponse basePollResponse = new BasePollResponse();
+
+        User answerer = isValidUser(user);
+
+        Poll poll = getPollDao().findById(pollId);
+
+        if(answerer == null || poll == null) {
+            basePollResponse.setMessage("Invalid user or poll");
+            return basePollResponse;
+        }
+
+        List<PollForUserResponse> pollForUserResponses = new ArrayList<>();
+        PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
+        QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswerer(poll, user);
+        if(questionAsked!= null) {
+            pollForUserResponse.setCreditToBeEarned(questionAsked.getCreditAlloted());
+        } else {
+            pollForUserResponse.setCreditToBeEarned(0);
+        }
+
+        if(poll.getUserAnonymous() == 1) {
+            pollForUserResponse.setAskerName(null);
+        } else {
+            pollForUserResponse.setAskerName(poll.getAsker().getName());
+        }
+
+        pollForUserResponses.add(pollForUserResponse);
+
+        basePollResponse.setMessage(MatlbStringConstants.RESPONSE_OKAY);
+
+        basePollResponse.setPollForUserResponses(pollForUserResponses);
+        return basePollResponse;
+    }
+
+
     private User isValidUser(User tempUser) {
-        String gcmToken = tempUser.getGcmToken();
-        tempUser = getUserService().findUserByEmailIdAndAuthToken(tempUser.getEmailId() , tempUser.getAuthToken());
-        tempUser.setGcmToken(gcmToken);
-        return tempUser;
+        return getUserService().findUserByEmailIdAndAuthToken(tempUser.getEmailId() , tempUser.getAuthToken());
+    }
+
+    private int findPollAnswer(Poll poll) {
+        if (poll.getOptACount() >= poll.getOptBCount() && poll.getOptACount() >= poll.getOptCCount() && poll.getOptACount() >= poll.getOptDCount() && poll.getOptACount() >= poll.getOptECount()){
+            return 0;
+        }
+        if (poll.getOptBCount() >= poll.getOptACount() && poll.getOptBCount() >= poll.getOptCCount() && poll.getOptBCount() >= poll.getOptDCount() && poll.getOptBCount() >= poll.getOptECount()){
+            return 1;
+        }
+        if (poll.getOptCCount() >= poll.getOptACount() && poll.getOptCCount() >= poll.getOptBCount() && poll.getOptCCount() >= poll.getOptDCount() && poll.getOptCCount() >= poll.getOptECount()){
+            return 2;
+        }
+        if (poll.getOptDCount() >= poll.getOptACount() && poll.getOptDCount() >= poll.getOptBCount() && poll.getOptDCount() >= poll.getOptCCount() && poll.getOptDCount() >= poll.getOptECount()){
+            return 3;
+        }
+        if (poll.getOptECount() >= poll.getOptACount() && poll.getOptECount() >= poll.getOptBCount() && poll.getOptECount() >= poll.getOptCCount() && poll.getOptECount() >= poll.getOptDCount()){
+            return 4;
+        }
+        return -1;
     }
 
     // TODO : add a method to update poll status as COMPLETED if all rows in question asked are in status other than PENDING state .Also , take care of valid upto case .

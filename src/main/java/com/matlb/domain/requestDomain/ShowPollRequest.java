@@ -13,17 +13,17 @@ public class ShowPollRequest {
 
     private int openForAll;
 
-    private String gcmToken;
+    private String authToken;
 
     public ShowPollRequest(){
 
     }
 
-    public ShowPollRequest(User user , int pageNumber , int openForAll , String gcmToken) {
+    public ShowPollRequest(User user , int pageNumber , int openForAll , String authToken) {
         this.user = user;
         this.pageNumber = pageNumber;
         this.openForAll = openForAll;
-        this.gcmToken = gcmToken;
+        this.authToken = authToken;
     }
 
     public User getUser() {
@@ -50,11 +50,11 @@ public class ShowPollRequest {
         this.openForAll = openForAll;
     }
 
-    public String getGcmToken() {
-        return gcmToken;
+    public String getAuthToken() {
+        return authToken;
     }
 
-    public void setGcmToken(String gcmToken) {
-        this.gcmToken = gcmToken;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

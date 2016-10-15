@@ -33,9 +33,13 @@ public class PollAnsweredResponse {
 
     private String optionEText;
 
+    private int creditsEarned;
+
     private String genre;
 
     private int answerGiven;
+
+    private int correctAnswer;
 
     private String askerName;
 
@@ -109,5 +113,21 @@ public class PollAnsweredResponse {
 
     public void setAskerName(String askerName) {
         this.askerName = askerName;
+    }
+
+    public int getCreditsEarned() {
+        return creditsEarned;
+    }
+
+    public void setCreditsEarned(int creditsEarned) {
+        this.creditsEarned = creditsEarned;
+    }
+
+    public int getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(int correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }

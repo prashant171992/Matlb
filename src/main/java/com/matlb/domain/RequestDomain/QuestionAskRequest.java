@@ -11,21 +11,21 @@ public class QuestionAskRequest {
 
     }
 
-    public QuestionAskRequest(User askedTo, int creditAsBait) {
-        this.askedTo = askedTo;
+    public QuestionAskRequest(Integer phoneNumber, int creditAsBait) {
+        this.phoneNumber = phoneNumber;
         this.creditAsBait = creditAsBait;
     }
 
-    private User askedTo;
 
+    private Integer phoneNumber;
     private int creditAsBait;
 
-    public User getAskedTo() {
-        return askedTo;
+    public Integer getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setAskedTo(User askedTo) {
-        this.askedTo = askedTo;
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public int getCreditAsBait() {
