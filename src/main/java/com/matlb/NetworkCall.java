@@ -3,25 +3,28 @@ package com.matlb;
 import com.google.gson.Gson;
 import com.matlb.domain.Notification;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by prassingh on 9/25/16.
  */
 public class NetworkCall {
+
+    @Value("${notification_url}")
+    private static String url;
+
+    @Value("${authorization_key}")
+    private static String authorizationKey;
+
     static HttpClient httpClient = HttpClientBuilder.create().build();;
 
     private static void makeGetRequest(String url) throws IOException {
@@ -48,13 +51,11 @@ public class NetworkCall {
 
     public static void makePostRequest(Notification notification) throws IOException {
 
-        String url = "https://fcm.googleapis.com/fcm/send";
-
         HttpPost post = new HttpPost(url);
 
         // add header
         post.setHeader("Content-Type", "application/json");
-        post.setHeader("Authorization", "key=AIzaSyDrD04ovojUL2dr8hayRmkcnrqMG2VzdGs");
+        post.setHeader("Authorization", authorizationKey);
 
 //        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 //        urlParameters.add(new BasicNameValuePair("sn", "C02G8416DRJM"));
@@ -89,7 +90,6 @@ public class NetworkCall {
 ////        System.out.println(result.toString());
 //
 //        }
-        return;
     }
 
 
