@@ -22,11 +22,11 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAskerAndGenre(User asker , GenreType genre , Pageable pageRequest);
 
-    Page<Poll> findByAskerAndStatus(User asker , StatusType status, Pageable pageRequest);
+    List<Poll> findByAskerAndStatus(User asker , StatusType status, Pageable pageRequest);
 
-    Page<Poll> findByAsker(User asker, Pageable pageRequest);
+    List<Poll> findByAsker(User asker, Pageable pageRequest);
 
-    Page<Poll> findByPollOpenForAllOrderByUpdateDtDesc(int pollOpenForAll , Pageable pageRequest);
+    List<Poll> findByPollOpenForAllOrderByUpdateDtDesc(int pollOpenForAll , Pageable pageRequest);
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
 
 }

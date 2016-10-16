@@ -63,7 +63,7 @@ public class PollServiceImpl implements PollService {
 
             basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
-            Page<Poll> polls;
+            List<Poll> polls;
 
             if(pollEnquiryRequest.getStatus() == StatusType.ALL.ordinal()) {
                 polls = getPollDao().findByAsker(pollEnquiryRequest.getUser() , pageRequest);
@@ -73,7 +73,7 @@ public class PollServiceImpl implements PollService {
 
             List<PollResponse> pollResponseList = new ArrayList<PollResponse>();
 
-            for (Poll poller : polls.getContent()) {
+            for (Poll poller : polls) {
                 PollResponse pollResponse = new PollResponse(poller);
                 List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poller, pollEnquiryRequest.getUser());
                 List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
@@ -195,8 +195,8 @@ public class PollServiceImpl implements PollService {
 
             if(showPollRequest.getOpenForAll() == 1){
 
-                Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
-                for(Poll poll : polls.getContent()) {
+                List<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
+                for(Poll poll : polls) {
                     if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
                         PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
                         if(poll.getUserAnonymous() == 0) {
