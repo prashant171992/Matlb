@@ -74,23 +74,28 @@ public class PollServiceImpl implements PollService {
 
             List<PollResponse> pollResponseList = new ArrayList<PollResponse>();
 
-            for (Poll poller : polls) {
-                PollResponse pollResponse = new PollResponse(poller);
-                List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poller, pollEnquiryRequest.getUser());
-                List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
+            if(polls != null) {
+                for (Poll poller : polls) {
+                    PollResponse pollResponse = new PollResponse(poller);
+                    List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poller, pollEnquiryRequest.getUser());
+                    List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
 
-                int creditsUsed = 0;
+                    int creditsUsed = 0;
+                    if(questionAskedList != null) {
+                        for (QuestionAsked question : questionAskedList) {
+                            PeopleAnsweredOrNot peopleAnsweredOrNot = new PeopleAnsweredOrNot(question);
+                            peopleAnsweredOrNotList.add(peopleAnsweredOrNot);
+                            creditsUsed += question.getCreditAlloted();  // not considering the status of questionAsked
+                        }
+                    }
 
-                for (QuestionAsked question : questionAskedList) {
-                    PeopleAnsweredOrNot peopleAnsweredOrNot = new PeopleAnsweredOrNot(question);
-                    peopleAnsweredOrNotList.add(peopleAnsweredOrNot);
-                    creditsUsed += question.getCreditAlloted();  // not considering the status of questionAsked
+
+                    pollResponse.setCreditsUsed(creditsUsed);
+                    pollResponse.setPeopleAnsweredOrNotList(peopleAnsweredOrNotList);
+                    pollResponseList.add(pollResponse);
                 }
-
-                pollResponse.setCreditsUsed(creditsUsed);
-                pollResponse.setPeopleAnsweredOrNotList(peopleAnsweredOrNotList);
-                pollResponseList.add(pollResponse);
             }
+
 
             basePollResponse.setPollResponseList(pollResponseList);
 
@@ -118,31 +123,34 @@ public class PollServiceImpl implements PollService {
 
             List<PollAnsweredResponse> pollAnsweredResponseList = new ArrayList<PollAnsweredResponse>();
 
-            for(PollAnswer pollAnswer : pollAnswerList) {
-                PollAnsweredResponse pollAnsweredResponse = new PollAnsweredResponse(pollAnswer);
+            if(pollAnswerList != null) {
+                for(PollAnswer pollAnswer : pollAnswerList) {
+                    PollAnsweredResponse pollAnsweredResponse = new PollAnsweredResponse(pollAnswer);
 
-                // for fetching credits , if any
-                QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswerer(pollAnswer.getPoll(), pollEnquiryRequest.getUser());
-                if(questionAsked != null) {
-                    pollAnsweredResponse.setCreditsEarned(questionAsked.getCreditAlloted());
-                } else {
-                    pollAnsweredResponse.setCreditsEarned(0);
+                    // for fetching credits , if any
+                    QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswerer(pollAnswer.getPoll(), pollEnquiryRequest.getUser());
+                    if(questionAsked != null) {
+                        pollAnsweredResponse.setCreditsEarned(questionAsked.getCreditAlloted());
+                    } else {
+                        pollAnsweredResponse.setCreditsEarned(0);
+                    }
+
+                    pollAnsweredResponse.setCorrectAnswer(findPollAnswer(pollAnswer.getPoll()));
+
+                    PollQuestion pollQuestion = getPollQuestionDao().findByPoll(pollAnswer.getPoll());
+
+                    pollAnsweredResponse.setQuestionText(pollQuestion.getQuestionText());
+                    pollAnsweredResponse.setOptionAText(pollQuestion.getOptionA());
+                    pollAnsweredResponse.setOptionBText(pollQuestion.getOptionB());
+                    pollAnsweredResponse.setOptionCText(pollQuestion.getOptionC());
+                    pollAnsweredResponse.setOptionDText(pollQuestion.getOptionD());
+                    pollAnsweredResponse.setOptionEText(pollQuestion.getOptionE());
+
+                    pollAnsweredResponseList.add(pollAnsweredResponse);
+
                 }
-
-                pollAnsweredResponse.setCorrectAnswer(findPollAnswer(pollAnswer.getPoll()));
-
-                PollQuestion pollQuestion = getPollQuestionDao().findByPoll(pollAnswer.getPoll());
-
-                pollAnsweredResponse.setQuestionText(pollQuestion.getQuestionText());
-                pollAnsweredResponse.setOptionAText(pollQuestion.getOptionA());
-                pollAnsweredResponse.setOptionBText(pollQuestion.getOptionB());
-                pollAnsweredResponse.setOptionCText(pollQuestion.getOptionC());
-                pollAnsweredResponse.setOptionDText(pollQuestion.getOptionD());
-                pollAnsweredResponse.setOptionEText(pollQuestion.getOptionE());
-
-                pollAnsweredResponseList.add(pollAnsweredResponse);
-
             }
+
             basePollResponse.setPollAnsweredResponses(pollAnsweredResponseList);
 
         } else {
@@ -167,9 +175,11 @@ public class PollServiceImpl implements PollService {
 
             List<PollQuestionAskedToResponse> pollQuestionAskedToResponseList = new ArrayList<PollQuestionAskedToResponse>();
 
-            for(QuestionAsked questionAsked : questionAskedList) {
-                PollQuestionAskedToResponse pollQuestionAskedToResponse = new PollQuestionAskedToResponse(questionAsked);
-                pollQuestionAskedToResponseList.add(pollQuestionAskedToResponse);
+            if(questionAskedList != null) {
+                for(QuestionAsked questionAsked : questionAskedList) {
+                    PollQuestionAskedToResponse pollQuestionAskedToResponse = new PollQuestionAskedToResponse(questionAsked);
+                    pollQuestionAskedToResponseList.add(pollQuestionAskedToResponse);
+                }
             }
 
             basePollResponse.setPollQuestionAskedToResponses(pollQuestionAskedToResponseList);
@@ -197,11 +207,29 @@ public class PollServiceImpl implements PollService {
             if(showPollRequest.getOpenForAll() == 1){
 
                 Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
-                for(Poll poll : polls) {
-                    if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
-                        PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
-                        if(poll.getUserAnonymous() == 0) {
-                            pollForUserResponse.setAskerName(poll.getAsker().getName());
+
+                if(polls != null) {
+                    for(Poll poll : polls) {
+                        if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
+                            PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
+                            if(poll.getUserAnonymous() == 0) {
+                                pollForUserResponse.setAskerName(poll.getAsker().getName());
+                            } else {
+                                pollForUserResponse.setAskerName(null);
+                            }
+                            pollForUserResponseList.add(pollForUserResponse);
+                        }
+                    }
+                }
+
+            } else {
+
+                Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatus(user , StatusType.PENDING , pageRequest);
+                if(questionAskedList != null) {
+                    for(QuestionAsked questionAsked : questionAskedList) {
+                        PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
+                        if(questionAsked.getPoll().getUserAnonymous() == 0) {
+                            pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
                         } else {
                             pollForUserResponse.setAskerName(null);
                         }
@@ -209,18 +237,6 @@ public class PollServiceImpl implements PollService {
                     }
                 }
 
-            } else {
-
-                Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatus(user , StatusType.PENDING , pageRequest);
-                for(QuestionAsked questionAsked : questionAskedList) {
-                    PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
-                    if(questionAsked.getPoll().getUserAnonymous() == 0) {
-                        pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
-                    } else {
-                        pollForUserResponse.setAskerName(null);
-                    }
-                    pollForUserResponseList.add(pollForUserResponse);
-                }
             }
 
             basePollResponse.setPollForUserResponses(pollForUserResponseList);
