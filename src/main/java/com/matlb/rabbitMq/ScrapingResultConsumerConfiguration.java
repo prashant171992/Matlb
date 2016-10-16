@@ -32,14 +32,14 @@ public class ScrapingResultConsumerConfiguration extends RabbitMqConfiguration {
         return new Queue(this.scrapingResultQueue);
     }
 
-    @Bean
-    public SimpleMessageListenerContainer listenerContainer() {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory());
-        container.setQueueNames(this.scrapingResultQueue);
-        container.setMessageListener(messageListenerAdapter());
-        return container;
-    }
+//    @Bean
+//    public SimpleMessageListenerContainer listenerContainer() {
+////        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+////        container.setConnectionFactory(connectionFactory());
+////        container.setQueueNames(this.scrapingResultQueue);
+////        container.setMessageListener(messageListenerAdapter());
+////        return container;
+//    }
 
     @Bean
     public MessageListenerAdapter messageListenerAdapter() {
