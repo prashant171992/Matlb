@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -62,30 +63,31 @@ public class PollServiceImpl implements PollService {
 
             basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
-            Page<Poll> poll;
+            Page<Poll> polls;
 
             if(pollEnquiryRequest.getStatus() == StatusType.ALL.ordinal()) {
-                poll = getPollDao().findByAsker(pollEnquiryRequest.getUser() , pageRequest);
+                polls = getPollDao().findByAsker(pollEnquiryRequest.getUser() , pageRequest);
             } else {
-                poll = getPollDao().findByAskerAndStatus(pollEnquiryRequest.getUser() , StatusType.values()[pollEnquiryRequest.getStatus()] , pageRequest);
+                polls = getPollDao().findByAskerAndStatus(pollEnquiryRequest.getUser() , StatusType.values()[pollEnquiryRequest.getStatus()] , pageRequest);
             }
 
             List<PollResponse> pollResponseList = new ArrayList<PollResponse>();
 
-            for(Poll poller : poll){
+            for (Poll poller : polls.getContent()) {
                 PollResponse pollResponse = new PollResponse(poller);
-                List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poller,pollEnquiryRequest.getUser());
+                List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poller, pollEnquiryRequest.getUser());
                 List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
 
                 int creditsUsed = 0;
 
-                for(QuestionAsked question : questionAskedList) {
+                for (QuestionAsked question : questionAskedList) {
                     PeopleAnsweredOrNot peopleAnsweredOrNot = new PeopleAnsweredOrNot(question);
                     peopleAnsweredOrNotList.add(peopleAnsweredOrNot);
-                    creditsUsed+=question.getCreditAlloted();  // not considering the status of questionAsked
+                    creditsUsed += question.getCreditAlloted();  // not considering the status of questionAsked
                 }
 
                 pollResponse.setCreditsUsed(creditsUsed);
+                pollResponse.setPeopleAnsweredOrNotList(peopleAnsweredOrNotList);
                 pollResponseList.add(pollResponse);
             }
 
@@ -194,7 +196,7 @@ public class PollServiceImpl implements PollService {
             if(showPollRequest.getOpenForAll() == 1){
 
                 Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
-                for(Poll poll : polls) {
+                for(Poll poll : polls.getContent()) {
                     if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
                         PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
                         if(poll.getUserAnonymous() == 0) {
@@ -287,6 +289,7 @@ public class PollServiceImpl implements PollService {
                 QuestionAsked questionAsked = new QuestionAsked();
                 User answerer = getUserService().findByMobileNumber(questionAskRequest.getPhoneNumber());
                 questionAsked.setAnswerer(answerer);
+                questionAsked.setStatus(StatusType.PENDING);
                 questionAsked.setAsker(asker);
                 questionAsked.setCreditAlloted(questionAsked.getCreditAlloted());
                 questionAsked.setPoll(poll);
