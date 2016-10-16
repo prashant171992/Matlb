@@ -158,7 +158,7 @@ public class PollServiceImpl implements PollService {
         if((user = isValidUser(user)) != null) {
             basePollResponse = new BasePollResponse("response okay !");
 
-            Poll poll = getPollDao().findById(pollId);
+            Poll poll = getPollDao().findOne(pollId);
 
             Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poll , user , pageRequest);
 
@@ -319,7 +319,7 @@ public class PollServiceImpl implements PollService {
 
         User answerer = isValidUser(answerQuestionRequest.getUser());
 
-        Poll poll = getPollDao().findById(answerQuestionRequest.getPollId());
+        Poll poll = getPollDao().findOne(answerQuestionRequest.getPollId());
 
         if(answerer == null || poll == null) {
             basePollResponse.setMessage("Invalid answerer or poll");
@@ -427,7 +427,7 @@ public class PollServiceImpl implements PollService {
 
         User answerer = isValidUser(user);
 
-        Poll poll = getPollDao().findById(pollId);
+        Poll poll = getPollDao().findOne(pollId);
 
         if(answerer == null || poll == null) {
             basePollResponse.setMessage("Invalid user or poll");
@@ -448,7 +448,7 @@ public class PollServiceImpl implements PollService {
 
         User answerer = isValidUser(user);
 
-        Poll poll = getPollDao().findById(pollId);
+        Poll poll = getPollDao().findOne(pollId);
 
         if(answerer == null || poll == null) {
             basePollResponse.setMessage("Invalid user or poll");
