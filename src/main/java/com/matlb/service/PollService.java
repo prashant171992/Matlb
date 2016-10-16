@@ -16,7 +16,7 @@ public interface PollService {
 
     public BasePollResponse getPollAnsweredByUser(PollEnquiryRequest pollInquiryRequest, int pageNum);
 
-    public BasePollResponse getPollAskedToByUser(User user , int pollId , int pageNum);
+    public BasePollResponse getPollAskedToByUser(User user , Integer pollId , int pageNum);
 
     public BasePollResponse getPollToBeShownToUser(ShowPollRequest showPollRequest);
 
@@ -24,8 +24,8 @@ public interface PollService {
 
     public BasePollResponse answerPollQuestion(AnswerQuestionRequest answerQuestionRequest);
 
-    public BasePollResponse updatePollStatus(User user, int pollId, int status);
+    public BasePollResponse updatePollStatus(User user, Integer pollId, int status);
 
-    public BasePollResponse getPollDetailsById(User user, int pollId);
+    public BasePollResponse getPollDetailsById(User user, Integer pollId);
 
 }

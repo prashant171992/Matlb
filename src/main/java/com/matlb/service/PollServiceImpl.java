@@ -150,7 +150,7 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public BasePollResponse getPollAskedToByUser(User user, int pollId, int pageNum) {
+    public BasePollResponse getPollAskedToByUser(User user, Integer pollId, int pageNum) {
         PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE);
 
         BasePollResponse basePollResponse ;
@@ -422,7 +422,7 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public BasePollResponse updatePollStatus(User user, int pollId, int status) {
+    public BasePollResponse updatePollStatus(User user, Integer pollId, int status) {
         BasePollResponse basePollResponse = new BasePollResponse();
 
         User answerer = isValidUser(user);
@@ -443,7 +443,7 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public BasePollResponse getPollDetailsById(User user, int pollId) {
+    public BasePollResponse getPollDetailsById(User user, Integer pollId) {
         BasePollResponse basePollResponse = new BasePollResponse();
 
         User answerer = isValidUser(user);
@@ -457,7 +457,7 @@ public class PollServiceImpl implements PollService {
 
         List<PollForUserResponse> pollForUserResponses = new ArrayList<>();
         PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
-        QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswerer(poll, user);
+        QuestionAsked questionAsked = getQuestionAskedDao().findByPollAndAnswerer(poll, answerer);
         if(questionAsked!= null) {
             pollForUserResponse.setCreditToBeEarned(questionAsked.getCreditAlloted());
         } else {
