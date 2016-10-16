@@ -5,6 +5,7 @@ import com.matlb.domain.Poll;
 import com.matlb.domain.StatusType;
 import com.matlb.domain.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,11 +23,11 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAskerAndGenre(User asker , GenreType genre , Pageable pageRequest);
 
-    List<Poll> findByAskerAndStatus(User asker , StatusType status, Pageable pageRequest);
+    Page<Poll> findByAskerAndStatus(User asker , StatusType status, Pageable pageRequest);
 
-    List<Poll> findByAsker(User asker, Pageable pageRequest);
+    Page<Poll> findByAsker(User asker, Pageable pageRequest);
 
-    List<Poll> findByPollOpenForAllOrderByUpdateDtDesc(int pollOpenForAll , Pageable pageRequest);
+    Page<Poll> findByPollOpenForAllOrderByUpdateDtDesc(int pollOpenForAll , Pageable pageRequest);
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
 
 }

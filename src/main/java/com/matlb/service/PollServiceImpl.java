@@ -8,6 +8,7 @@ import com.matlb.domain.responseDomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +64,7 @@ public class PollServiceImpl implements PollService {
 
             basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
-            List<Poll> polls;
+            Page<Poll> polls;
 
             if(pollEnquiryRequest.getStatus() == StatusType.ALL.ordinal()) {
                 polls = getPollDao().findByAsker(pollEnquiryRequest.getUser() , pageRequest);
@@ -195,7 +196,7 @@ public class PollServiceImpl implements PollService {
 
             if(showPollRequest.getOpenForAll() == 1){
 
-                List<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
+                Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByUpdateDtDesc(1 , pageRequest);
                 for(Poll poll : polls) {
                     if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
                         PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
