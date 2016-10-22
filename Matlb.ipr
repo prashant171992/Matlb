@@ -108,8 +108,9 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.3.1" />
             <element id="library" level="project" name="Gradle: org.jasypt:jasypt:1.9.0" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore-nio/4.1.3/e8a6cae8cef01c624e9682c0c9930893bec37aed/httpcore-nio-4.1.3.jar" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.apache.httpcomponents/httpasyncclient/4.0-alpha2/d3f284bbdba64e0f385e3d6b5f009ec9f6069f5f/httpasyncclient-4.0-alpha2.jar" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.1.3" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.0-alpha2" />
+            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/joda-time/joda-time/2.9.4/1c295b462f16702ebe720bbb08f62e1ba80da41b/joda-time-2.9.4.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -224,8 +225,9 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.3.1" />
             <element id="library" level="project" name="Gradle: org.jasypt:jasypt:1.9.0" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore-nio/4.1.3/e8a6cae8cef01c624e9682c0c9930893bec37aed/httpcore-nio-4.1.3.jar" />
-            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/org.apache.httpcomponents/httpasyncclient/4.0-alpha2/d3f284bbdba64e0f385e3d6b5f009ec9f6069f5f/httpasyncclient-4.0-alpha2.jar" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.1.3" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.0-alpha2" />
+            <element id="file-copy" path="$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/joda-time/joda-time/2.9.4/1c295b462f16702ebe720bbb08f62e1ba80da41b/joda-time-2.9.4.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -750,6 +752,15 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/javax.ws.rs/jsr311-api/1.1.1/bcc4b7b569ef8bb9b82e48cf23b5aaac29a4fb4e/jsr311-api-1.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: joda-time:joda-time:2.9.4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/joda-time/joda-time/2.9.4/1c295b462f16702ebe720bbb08f62e1ba80da41b/joda-time-2.9.4.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/gradle/wrapper/caches/modules-2/files-2.1/joda-time/joda-time/2.9.4/53c1bcc94f55a63bed4715f766d5d5f5c411bc33/joda-time-2.9.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: junit:junit:4.12">

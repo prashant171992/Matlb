@@ -1,6 +1,8 @@
 package com.matlb.domain.responseDomain;
 
 import com.matlb.domain.Poll;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,10 @@ public class PollResponse {
         this.userAnonymous = poll.getUserAnonymous();
         this.pollOpenForAll = poll.getPollOpenForAll();
         this.questionStatus = poll.getStatus().ordinal();
+
+        DateTime dateTime = new DateTime(poll.getCreateDt());
+        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/mm/yyyy");
+        this.date = dateTimeFormatter.print(dateTime);
     }
 
     private String questionText;
@@ -69,6 +75,8 @@ public class PollResponse {
     private int userAnonymous;
 
     private int questionStatus;
+
+    private String date;
 
     public String getQuestionText() {
         return questionText;
@@ -212,5 +220,13 @@ public class PollResponse {
 
     public void setPeopleAnsweredOrNotList(List<PeopleAnsweredOrNot> peopleAnsweredOrNotList) {
         this.peopleAnsweredOrNotList = peopleAnsweredOrNotList;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

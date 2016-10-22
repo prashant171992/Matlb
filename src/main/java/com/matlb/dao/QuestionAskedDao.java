@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface QuestionAskedDao extends JpaRepository<QuestionAsked , Integer> {
 
-    List<QuestionAsked> findByPollAndAsker(Poll poll , User asker);
-    Page<QuestionAsked> findByPollAndAsker(Poll poll , User asker , Pageable pageRequest);
-    Page<QuestionAsked> findByAnswererAndStatus (User user , StatusType status, Pageable pageRequest);
-    List<QuestionAsked> findByPollAndAskerAndStatus(Poll poll , User asker , int status);
+    List<QuestionAsked> findByPollAndAskerOrderByCreateDtDesc(Poll poll , User asker);
+    Page<QuestionAsked> findByPollAndAskerOrderByCreateDtDesc(Poll poll , User asker , Pageable pageRequest);
+    Page<QuestionAsked> findByAnswererAndStatusOrderByCreateDtDesc (User user , StatusType status, Pageable pageRequest);
+    List<QuestionAsked> findByPollAndAskerAndStatusOrderByCreateDtDesc(Poll poll , User asker , int status);
     QuestionAsked findByPollAndAnswererAndStatus(Poll poll , User answerer , StatusType status);
     QuestionAsked findByPollAndAnswerer(Poll poll , User answerer);
 
