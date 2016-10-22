@@ -1,6 +1,12 @@
 package com.matlb.domain.responseDomain;
 
 import com.matlb.domain.PollAnswer;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by prassingh on 8/21/16.
@@ -19,6 +25,10 @@ public class PollAnsweredResponse {
         } else {
             this.askerName = "";
         }
+
+        DateTime dateTime = new DateTime(pollAnswer.getCreateDt());
+        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/mm/yyyy");
+        this.date = dateTimeFormatter.print(dateTime);
     }
 
     private String questionText;
@@ -42,6 +52,8 @@ public class PollAnsweredResponse {
     private int correctAnswer;
 
     private String askerName;
+
+    private String date;
 
     public String getQuestionText() {
         return questionText;
@@ -129,5 +141,13 @@ public class PollAnsweredResponse {
 
     public void setCorrectAnswer(int correctAnswer) {
         this.correctAnswer = correctAnswer;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
