@@ -40,6 +40,8 @@ public class PollResponse {
         this.date = dateTimeFormatter.print(dateTime);
     }
 
+    private int pollId;
+
     private String questionText;
 
     private String optionAText;
@@ -228,5 +230,13 @@ public class PollResponse {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getPollId() {
+        return pollId;
+    }
+
+    public void setPollId(int pollId) {
+        this.pollId = pollId;
     }
 }
