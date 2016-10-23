@@ -292,7 +292,7 @@ public class PollServiceImpl implements PollService {
         if (createPollRequest.getUserAnonymous() == 1) {
             notificationData.setAsker(MatlbStringConstants.POLL_ASKED_ANONYMOUS);
         } else {
-            notificationData.setAsker(asker.getName() + MatlbStringConstants.POLL_ASKED_NON_ANONYMOUS);
+            notificationData.setAsker(asker.getName().split("\\s+")[0] + MatlbStringConstants.POLL_ASKED_NON_ANONYMOUS);
         }
         notificationData.setMessage(pollQuestion.getQuestionText());
         notificationData.setPollId(poll.getId());
