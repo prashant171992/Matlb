@@ -27,7 +27,7 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAskerOrderByCreateDtDesc(User asker, Pageable pageRequest);
 
-    Page<Poll> findByPollOpenForAllOrderByCreateDtDesc(int pollOpenForAll , Pageable pageRequest);
+    Page<Poll> findByPollOpenForAllAndStatusOrderByCreateDtDesc(int pollOpenForAll , StatusType status , Pageable pageRequest);
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
 
 }

@@ -206,7 +206,7 @@ public class PollServiceImpl implements PollService {
 
             if(showPollRequest.getOpenForAll() == 1){
 
-                Page<Poll> polls = getPollDao().findByPollOpenForAllOrderByCreateDtDesc(1 , pageRequest);
+                Page<Poll> polls = getPollDao().findByPollOpenForAllAndStatusOrderByCreateDtDesc(1 , StatusType.RUNNING , pageRequest);
 
                 if(polls != null) {
                     for(Poll poll : polls) {
@@ -227,13 +227,15 @@ public class PollServiceImpl implements PollService {
                 Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatusOrderByCreateDtDesc(user , StatusType.PENDING , pageRequest);
                 if(questionAskedList != null) {
                     for(QuestionAsked questionAsked : questionAskedList) {
-                        PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
-                        if(questionAsked.getPoll().getUserAnonymous() == 0) {
-                            pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
-                        } else {
-                            pollForUserResponse.setAskerName(null);
+                        if (questionAsked.getPoll().getStatus().equals(StatusType.RUNNING)) {
+                            PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
+                            if(questionAsked.getPoll().getUserAnonymous() == 0) {
+                                pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
+                            } else {
+                                pollForUserResponse.setAskerName(null);
+                            }
+                            pollForUserResponseList.add(pollForUserResponse);
                         }
-                        pollForUserResponseList.add(pollForUserResponse);
                     }
                 }
 
