@@ -70,4 +70,8 @@ public class PollAnswer implements Serializable {
     public void setAnswer(ResultType answer) {
         this.answer = answer;
     }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
 }

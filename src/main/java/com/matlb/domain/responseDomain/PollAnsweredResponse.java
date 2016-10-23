@@ -27,7 +27,7 @@ public class PollAnsweredResponse {
         }
 
         DateTime dateTime = new DateTime(pollAnswer.getCreateDt());
-        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/mm/yyyy");
+        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
         this.date = dateTimeFormatter.print(dateTime);
     }
 

@@ -36,7 +36,7 @@ public class PollResponse {
         this.questionStatus = poll.getStatus().ordinal();
 
         DateTime dateTime = new DateTime(poll.getCreateDt());
-        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/mm/yyyy");
+        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
         this.date = dateTimeFormatter.print(dateTime);
     }
 
