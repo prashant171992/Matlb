@@ -352,7 +352,7 @@ public class PollServiceImpl implements PollService {
 
         if (questionAsked == null) {
             // Checked if user can give answer to openForAll question or he has already answered it
-            if(poll.getPollOpenForAll() == 1 && poll.getStatus().ordinal() != StatusType.COMPLETED.ordinal()
+            if(/*poll.getPollOpenForAll() == 1 &&*/ poll.getStatus().ordinal() != StatusType.COMPLETED.ordinal()
                     && poll.getStatus().ordinal() != StatusType.EXPIRED.ordinal()
                     && getPollAnswerDao().findByPollAndAnswerer(poll, answerer) == null) {
 
