@@ -66,8 +66,9 @@ public class UserServiceImpl implements UserService {
 
             if(tempUser == null) {
                 user.setAuthToken(authToken);
+                user.setCredits(100);
                 user = saveUser(user);
-                sendMail(email);
+                //sendMail(email);
                 userResponse = new UserResponse(MatlbStringConstants.USER_REGISTER_SUCCESS);
                 userResponse.setUserCreated(true);
                 userResponse.setUser(user);
