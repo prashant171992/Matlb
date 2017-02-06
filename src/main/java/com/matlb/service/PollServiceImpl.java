@@ -329,6 +329,7 @@ public class PollServiceImpl implements PollService {
         }
         notificationData.setMessage(pollQuestion.getQuestionText());
         notificationData.setPollId(poll.getId());
+        notificationData.setAskOpinion(0);
 
         Notification notification = new Notification();
         notification.setData(notificationData);
@@ -484,6 +485,7 @@ public class PollServiceImpl implements PollService {
         notificationData.setAsker(asker);
         notificationData.setMessage(message);
         notificationData.setPollId(pollId);
+        notificationData.setAskOpinion(1);
 
         Notification notification = new Notification();
         notification.setRegistrationIds(gcmIds);

@@ -12,6 +12,7 @@ public class NotificationData {
     private int pollId;
     private String asker;
     private String message;
+    private int askOpinion;
 
     public int getPollId() {
         return pollId;
@@ -35,5 +36,13 @@ public class NotificationData {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getAskOpinion() {
+        return askOpinion;
+    }
+
+    public void setAskOpinion(int askOpinion) {
+        this.askOpinion = askOpinion;
     }
 }
