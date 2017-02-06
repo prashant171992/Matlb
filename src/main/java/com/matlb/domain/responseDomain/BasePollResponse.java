@@ -23,6 +23,8 @@ public class BasePollResponse extends BaseResponse {
 
     private List<PollForUserResponse> pollForUserResponses;
 
+    private List<String> pollCategories;
+
     public List<PollResponse> getPollResponseList() {
         return pollResponseList;
     }
@@ -53,5 +55,13 @@ public class BasePollResponse extends BaseResponse {
 
     public void setPollForUserResponses(List<PollForUserResponse> pollForUserResponses) {
         this.pollForUserResponses = pollForUserResponses;
+    }
+
+    public List<String> getPollCategories() {
+        return pollCategories;
+    }
+
+    public void setPollCategories(List<String> pollCategories) {
+        this.pollCategories = pollCategories;
     }
 }
