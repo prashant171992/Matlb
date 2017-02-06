@@ -305,6 +305,7 @@ public class PollServiceImpl implements PollService {
         poll.setGenre(GenreType.values()[createPollRequest.getGenreType()]);
         poll.setPollOpenForAll(createPollRequest.getOpenForAll());
         poll.setUserAnonymous(createPollRequest.getUserAnonymous());
+        poll.setPollCategory(PollCategoryEnum.valueOf(createPollRequest.getCategory()));
         poll = getPollDao().save(poll);
 
         PollQuestion pollQuestion = new PollQuestion();
