@@ -1,5 +1,7 @@
 package com.matlb.domain.responseDomain;
 
+import com.matlb.domain.Poll;
+import com.matlb.domain.PollCategoryColorEnum;
 import com.matlb.domain.PollQuestion;
 
 import java.util.Date;
@@ -22,6 +24,17 @@ public class PollForUserResponse {
         this.optionEText = pollQuestion.getOptionE();
         this.validUpto = pollQuestion.getPoll().getValidUpto();
         this.pollId = pollQuestion.getId();
+        Poll poll = pollQuestion.getPoll();
+        if (poll.getMultimedia() != null) {
+            this.questionURL = poll.getMultimedia().getQuestionURL();
+            this.optionAURL = poll.getMultimedia().getOptionAURL();
+            this.optionBURL = poll.getMultimedia().getOptionBURL();
+            this.optionCURL = poll.getMultimedia().getOptionCURL();
+            this.optionDURL = poll.getMultimedia().getOptionDURL();
+            this.optionEURL = poll.getMultimedia().getOptionEURL();
+        }
+        this.category = poll.getPollCategory().name();
+        this.categoryColor = PollCategoryColorEnum.valueOf(poll.getPollCategory().name()).getColorCode();
     }
 
     private int pollId;
@@ -43,6 +56,22 @@ public class PollForUserResponse {
     private Date validUpto;
 
     private String askerName;
+
+    private String questionURL;
+
+    private String optionAURL;
+
+    private String optionBURL;
+
+    private String optionCURL;
+
+    private String optionDURL;
+
+    private String optionEURL;
+
+    private String category;
+
+    private String categoryColor;
 
     public String getQuestionText() {
         return questionText;
@@ -122,5 +151,69 @@ public class PollForUserResponse {
 
     public void setPollId(int pollId) {
         this.pollId = pollId;
+    }
+
+    public String getQuestionURL() {
+        return questionURL;
+    }
+
+    public void setQuestionURL(String questionURL) {
+        this.questionURL = questionURL;
+    }
+
+    public String getOptionAURL() {
+        return optionAURL;
+    }
+
+    public void setOptionAURL(String optionAURL) {
+        this.optionAURL = optionAURL;
+    }
+
+    public String getOptionBURL() {
+        return optionBURL;
+    }
+
+    public void setOptionBURL(String optionBURL) {
+        this.optionBURL = optionBURL;
+    }
+
+    public String getOptionCURL() {
+        return optionCURL;
+    }
+
+    public void setOptionCURL(String optionCURL) {
+        this.optionCURL = optionCURL;
+    }
+
+    public String getOptionDURL() {
+        return optionDURL;
+    }
+
+    public void setOptionDURL(String optionDURL) {
+        this.optionDURL = optionDURL;
+    }
+
+    public String getOptionEURL() {
+        return optionEURL;
+    }
+
+    public void setOptionEURL(String optionEURL) {
+        this.optionEURL = optionEURL;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategoryColor() {
+        return categoryColor;
+    }
+
+    public void setCategoryColor(String categoryColor) {
+        this.categoryColor = categoryColor;
     }
 }

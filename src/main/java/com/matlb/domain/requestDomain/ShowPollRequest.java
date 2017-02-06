@@ -15,6 +15,8 @@ public class ShowPollRequest {
 
     private String authToken;
 
+    private String category;
+
     public ShowPollRequest(){
 
     }
@@ -24,6 +26,14 @@ public class ShowPollRequest {
         this.pageNumber = pageNumber;
         this.openForAll = openForAll;
         this.authToken = authToken;
+    }
+
+    public ShowPollRequest(User user , int pageNumber , int openForAll , String authToken, String category) {
+        this.user = user;
+        this.pageNumber = pageNumber;
+        this.openForAll = openForAll;
+        this.authToken = authToken;
+        this.category = category;
     }
 
     public User getUser() {
@@ -56,5 +66,13 @@ public class ShowPollRequest {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

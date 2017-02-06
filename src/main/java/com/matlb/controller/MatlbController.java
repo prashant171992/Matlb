@@ -108,6 +108,21 @@ public class MatlbController {
         return getPollService().getPollDetailsById(user, pollId);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/poll/asked/get/{pollId}")
+    public BasePollResponse getPollAskedDetailsById(@RequestBody User user, @PathVariable Integer pollId) {
+        return getPollService().getPollDetailsById(user, pollId);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/poll/cat")
+    public BasePollResponse getPollCategory(@RequestBody User user){
+        return getPollService().getPollCategories(user);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/poll/report/{pollId}")
+    public BasePollResponse reportPoll(@RequestBody User user,  @PathVariable Integer pollId) {
+        return getPollService().reportPoll(user, pollId);
+    }
+
     public UserService getUserService() {
         return userService;
     }

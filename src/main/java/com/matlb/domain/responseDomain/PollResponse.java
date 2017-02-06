@@ -1,5 +1,6 @@
 package com.matlb.domain.responseDomain;
 
+import com.matlb.domain.Multimedia;
 import com.matlb.domain.Poll;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -35,6 +36,16 @@ public class PollResponse {
         this.pollOpenForAll = poll.getPollOpenForAll();
         this.questionStatus = poll.getStatus().ordinal();
         this.pollId = poll.getId();
+        if (poll.getMultimedia() != null) {
+            this.questionURL = poll.getMultimedia().getQuestionURL();
+            this.optionAURL = poll.getMultimedia().getOptionAURL();
+            this.optionBURL = poll.getMultimedia().getOptionBURL();
+            this.optionCURL = poll.getMultimedia().getOptionCURL();
+            this.optionDURL = poll.getMultimedia().getOptionDURL();
+            this.optionEURL = poll.getMultimedia().getOptionEURL();
+        }
+
+        this.category = poll.getPollCategory().name();
 
         DateTime dateTime = new DateTime(poll.getCreateDt());
         org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
@@ -80,6 +91,20 @@ public class PollResponse {
     private int questionStatus;
 
     private String date;
+
+    private String questionURL;
+
+    private String optionAURL;
+
+    private String optionBURL;
+
+    private String optionCURL;
+
+    private String optionDURL;
+
+    private String optionEURL;
+
+    private String category;
 
     public String getQuestionText() {
         return questionText;
@@ -239,5 +264,61 @@ public class PollResponse {
 
     public void setPollId(int pollId) {
         this.pollId = pollId;
+    }
+
+    public String getQuestionURL() {
+        return questionURL;
+    }
+
+    public void setQuestionURL(String questionURL) {
+        this.questionURL = questionURL;
+    }
+
+    public String getOptionAURL() {
+        return optionAURL;
+    }
+
+    public void setOptionAURL(String optionAURL) {
+        this.optionAURL = optionAURL;
+    }
+
+    public String getOptionBURL() {
+        return optionBURL;
+    }
+
+    public void setOptionBURL(String optionBURL) {
+        this.optionBURL = optionBURL;
+    }
+
+    public String getOptionCURL() {
+        return optionCURL;
+    }
+
+    public void setOptionCURL(String optionCURL) {
+        this.optionCURL = optionCURL;
+    }
+
+    public String getOptionDURL() {
+        return optionDURL;
+    }
+
+    public void setOptionDURL(String optionDURL) {
+        this.optionDURL = optionDURL;
+    }
+
+    public String getOptionEURL() {
+        return optionEURL;
+    }
+
+    public void setOptionEURL(String optionEURL) {
+        this.optionEURL = optionEURL;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

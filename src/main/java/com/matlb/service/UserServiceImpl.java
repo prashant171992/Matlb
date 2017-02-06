@@ -23,10 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by prassingh on 3/22/16.
@@ -86,6 +83,31 @@ public class UserServiceImpl implements UserService {
             userResponse.setUserCreated(false);
             userResponse.setUser(null);
         }
+
+        List<String> phoneNumberPrefixes = new ArrayList<>();
+        phoneNumberPrefixes.add("91");  // IN
+        phoneNumberPrefixes.add("7");    // Russia
+        phoneNumberPrefixes.add("380");    // Ukraine
+        phoneNumberPrefixes.add("964");    // Iraq
+        phoneNumberPrefixes.add("1");    // USA
+        phoneNumberPrefixes.add("375");    // Belarus
+        phoneNumberPrefixes.add("39");    // Italy
+        phoneNumberPrefixes.add("34");    // Spain
+        phoneNumberPrefixes.add("212");    // Morocco
+        phoneNumberPrefixes.add("55");    // Brazil
+        phoneNumberPrefixes.add("49");    // Germany
+        phoneNumberPrefixes.add("33");    // France
+        phoneNumberPrefixes.add("62");    // Indonesia
+        phoneNumberPrefixes.add("82");    // South Korea
+        phoneNumberPrefixes.add("90");    // Turkey
+        phoneNumberPrefixes.add("60");    // Malaysia
+        phoneNumberPrefixes.add("92");    // Pakistan
+        phoneNumberPrefixes.add("966");    // Saudi Arabia
+        phoneNumberPrefixes.add("66");    // Thailand
+        phoneNumberPrefixes.add("972");    // Israel
+
+        userResponse.setPhoneNumberPrefixes(phoneNumberPrefixes);
+
         return userResponse;
     }
 

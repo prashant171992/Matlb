@@ -30,5 +30,6 @@ public class MatlbStringConstants {
     // Poll notification
     public static final String POLL_ASKED_NON_ANONYMOUS = " wants your opinion";
     public static final String POLL_ASKED_ANONYMOUS = "Someone wants your opinion";
+    public static final String POLL_ANSWERED = "Someone answered your poll";
 
 }

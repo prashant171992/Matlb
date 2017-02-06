@@ -55,6 +55,20 @@ public class PollAnsweredResponse {
 
     private String date;
 
+    private String questionURL;
+
+    private String optionAURL;
+
+    private String optionBURL;
+
+    private String optionCURL;
+
+    private String optionDURL;
+
+    private String optionEURL;
+
+    private String category;
+
     public String getQuestionText() {
         return questionText;
     }
@@ -149,5 +163,61 @@ public class PollAnsweredResponse {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getQuestionURL() {
+        return questionURL;
+    }
+
+    public void setQuestionURL(String questionURL) {
+        this.questionURL = questionURL;
+    }
+
+    public String getOptionAURL() {
+        return optionAURL;
+    }
+
+    public void setOptionAURL(String optionAURL) {
+        this.optionAURL = optionAURL;
+    }
+
+    public String getOptionBURL() {
+        return optionBURL;
+    }
+
+    public void setOptionBURL(String optionBURL) {
+        this.optionBURL = optionBURL;
+    }
+
+    public String getOptionCURL() {
+        return optionCURL;
+    }
+
+    public void setOptionCURL(String optionCURL) {
+        this.optionCURL = optionCURL;
+    }
+
+    public String getOptionDURL() {
+        return optionDURL;
+    }
+
+    public void setOptionDURL(String optionDURL) {
+        this.optionDURL = optionDURL;
+    }
+
+    public String getOptionEURL() {
+        return optionEURL;
+    }
+
+    public void setOptionEURL(String optionEURL) {
+        this.optionEURL = optionEURL;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

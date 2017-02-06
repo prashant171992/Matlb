@@ -28,4 +28,10 @@ public interface PollService {
 
     public BasePollResponse getPollDetailsById(User user, Integer pollId);
 
+    public BasePollResponse getPollCategories(User user);
+
+    public BasePollResponse reportPoll(User user, Integer pollId);
+
+    public BasePollResponse getPollAskedDetailsById(User user, Integer pollId);
+
 }

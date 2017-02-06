@@ -74,11 +74,22 @@ public class Poll implements Serializable {
     @Column(name = "anonymous")
     private int userAnonymous = 1;
 
+    @Column(name = "category" , nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PollCategoryEnum pollCategory = PollCategoryEnum.GENERAL;
+
+    @Column(name = "report_count")
+    private int reportCount = 0;
+
     @OneToMany(fetch = FetchType.LAZY , mappedBy = "poll" , cascade = CascadeType.ALL)
     private List<PollAnswer> pollAnswers;
 
     @OneToOne(fetch = FetchType.LAZY , mappedBy = "poll" , cascade = CascadeType.ALL)
     private PollQuestion pollQuestion;
+
+    @OneToOne(fetch = FetchType.LAZY , mappedBy = "poll" , cascade = CascadeType.ALL)
+    private Multimedia multimedia;
+
 
     public int getId() {
         return id;
@@ -188,6 +199,10 @@ public class Poll implements Serializable {
         return pollQuestion;
     }
 
+    public Multimedia getMultimedia() {
+        return multimedia;
+    }
+
     public void setPollAnswers(List<PollAnswer> pollAnswers) {
         this.pollAnswers = pollAnswers;
     }
@@ -210,5 +225,21 @@ public class Poll implements Serializable {
 
     public void setUserAnonymous(int userAnonymous) {
         this.userAnonymous = userAnonymous;
+    }
+
+    public PollCategoryEnum getPollCategory() {
+        return pollCategory;
+    }
+
+    public void setPollCategory(PollCategoryEnum pollCategory) {
+        this.pollCategory = pollCategory;
+    }
+
+    public int getReportCount() {
+        return reportCount;
+    }
+
+    public void setReportCount(int reportCount) {
+        this.reportCount = reportCount;
     }
 }

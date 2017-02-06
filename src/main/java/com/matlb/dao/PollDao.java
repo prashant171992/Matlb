@@ -1,9 +1,6 @@
 package com.matlb.dao;
 
-import com.matlb.domain.GenreType;
-import com.matlb.domain.Poll;
-import com.matlb.domain.StatusType;
-import com.matlb.domain.User;
+import com.matlb.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +25,9 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
     Page<Poll> findByAskerOrderByCreateDtDesc(User asker, Pageable pageRequest);
 
     Page<Poll> findByPollOpenForAllAndStatusOrderByCreateDtDesc(int pollOpenForAll , StatusType status , Pageable pageRequest);
+
+    Page<Poll> findByPollOpenForAllAndStatusAndPollCategoryOrderByCreateDtDesc(int pollOpenForAll , StatusType status , PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
+
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
 
 }

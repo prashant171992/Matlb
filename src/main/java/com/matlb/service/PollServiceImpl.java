@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by prassingh on 8/22/16.
@@ -33,6 +31,9 @@ public class PollServiceImpl implements PollService {
 
     @Autowired
     private PollQuestionDao pollQuestionDao;
+
+    @Autowired
+    private MultimediaDao multimediaDao;
 
     @Autowired
     private PollAnswerDao pollAnswerDao;
@@ -135,9 +136,11 @@ public class PollServiceImpl implements PollService {
                         pollAnsweredResponse.setCreditsEarned(0);
                     }
 
-                    pollAnsweredResponse.setCorrectAnswer(findPollAnswer(pollAnswer.getPoll()));
+                    Poll poll = pollAnswer.getPoll();
 
-                    PollQuestion pollQuestion = getPollQuestionDao().findByPoll(pollAnswer.getPoll());
+                    pollAnsweredResponse.setCorrectAnswer(findPollAnswer(poll));
+
+                    PollQuestion pollQuestion = getPollQuestionDao().findByPoll(poll);
 
                     pollAnsweredResponse.setQuestionText(pollQuestion.getQuestionText());
                     pollAnsweredResponse.setOptionAText(pollQuestion.getOptionA());
@@ -145,6 +148,17 @@ public class PollServiceImpl implements PollService {
                     pollAnsweredResponse.setOptionCText(pollQuestion.getOptionC());
                     pollAnsweredResponse.setOptionDText(pollQuestion.getOptionD());
                     pollAnsweredResponse.setOptionEText(pollQuestion.getOptionE());
+
+                    if (poll.getMultimedia() != null) {
+                        pollAnsweredResponse.setQuestionURL(poll.getMultimedia().getQuestionURL());
+                        pollAnsweredResponse.setOptionAURL(poll.getMultimedia().getOptionAURL());
+                        pollAnsweredResponse.setOptionBURL(poll.getMultimedia().getOptionBURL());
+                        pollAnsweredResponse.setOptionCURL(poll.getMultimedia().getOptionCURL());
+                        pollAnsweredResponse.setOptionDURL(poll.getMultimedia().getOptionDURL());
+                        pollAnsweredResponse.setOptionEURL(poll.getMultimedia().getOptionEURL());
+                    }
+
+                    pollAnsweredResponse.setCategory(poll.getPollCategory().name());
 
                     pollAnsweredResponseList.add(pollAnsweredResponse);
 
@@ -204,12 +218,21 @@ public class PollServiceImpl implements PollService {
 
             List<PollForUserResponse> pollForUserResponseList = new ArrayList<PollForUserResponse>();
 
-            if(showPollRequest.getOpenForAll() == 1){
+            if(showPollRequest.getOpenForAll() == 1) {
 
-                Page<Poll> polls = getPollDao().findByPollOpenForAllAndStatusOrderByCreateDtDesc(1 , StatusType.RUNNING , pageRequest);
+                Page<Poll> polls;
+                if (showPollRequest.getCategory() != null) {
+                     polls = getPollDao().findByPollOpenForAllAndStatusAndPollCategoryOrderByCreateDtDesc(1 , StatusType.RUNNING , PollCategoryEnum.valueOf(showPollRequest.getCategory()), pageRequest);
+                } else {
+                     polls = getPollDao().findByPollOpenForAllAndStatusOrderByCreateDtDesc(1 , StatusType.RUNNING , pageRequest);
+                }
 
-                if(polls != null) {
+
+                if (polls != null) {
                     for(Poll poll : polls) {
+                        if (poll.getReportCount() > 5) {
+                            continue;
+                        }
                         if(getPollAnswerDao().findByPollAndAnswerer(poll,user) == null && getQuestionAskedDao().findByPollAndAnswerer(poll, user) == null) {
                             PollForUserResponse pollForUserResponse = new PollForUserResponse(poll.getPollQuestion());
                             if(poll.getUserAnonymous() == 0) {
@@ -228,6 +251,11 @@ public class PollServiceImpl implements PollService {
                 if(questionAskedList != null) {
                     for(QuestionAsked questionAsked : questionAskedList) {
                         if (questionAsked.getPoll().getStatus().equals(StatusType.RUNNING)) {
+                            if (showPollRequest.getCategory() != null) {
+                                if (!questionAsked.getPoll().getPollCategory().equals(PollCategoryEnum.valueOf(showPollRequest.getCategory()))){
+                                    continue;
+                                }
+                            }
                             PollForUserResponse pollForUserResponse = new PollForUserResponse(questionAsked.getPoll().getPollQuestion());
                             if(questionAsked.getPoll().getUserAnonymous() == 0) {
                                 pollForUserResponse.setAskerName(questionAsked.getPoll().getAsker().getName());
@@ -289,6 +317,9 @@ public class PollServiceImpl implements PollService {
         pollQuestion.setPoll(poll);
 
         getPollQuestionDao().save(pollQuestion);
+
+        Multimedia multimedia = new Multimedia(poll, createPollRequest);
+        getMultimediaDao().save(multimedia);
 
         NotificationData notificationData = new NotificationData();
         if (createPollRequest.getUserAnonymous() == 1) {
@@ -386,6 +417,8 @@ public class PollServiceImpl implements PollService {
 
                 getPollDao().save(poll);
 
+                sendPollAnswered(Collections.singletonList(poll.getAsker().getGcmToken()), poll.getPollQuestion().getQuestionText(), MatlbStringConstants.POLL_ANSWERED, poll.getId() );
+
                 basePollResponse.setMessage(MatlbStringConstants.POLL_FOR_ALL_ANSWERED_SUCCESSFULLY);
             } else {
                 basePollResponse.setMessage("Invalid answerer/poll/status combination");
@@ -436,11 +469,31 @@ public class PollServiceImpl implements PollService {
 
             getUserDao().save(answerer);
 
+            sendPollAnswered(Collections.singletonList(poll.getAsker().getGcmToken()), poll.getPollQuestion().getQuestionText(), MatlbStringConstants.POLL_ANSWERED, poll.getId() );
+
             basePollResponse.setMessage(MatlbStringConstants.CREDITS_RECEIVED + questionAsked.getCreditAlloted());
         }
 
         return basePollResponse;
 
+    }
+
+    private void sendPollAnswered(List<String> gcmIds, String message, String asker, int pollId) {
+
+        NotificationData notificationData = new NotificationData();
+        notificationData.setAsker(asker);
+        notificationData.setMessage(message);
+        notificationData.setPollId(pollId);
+
+        Notification notification = new Notification();
+        notification.setRegistrationIds(gcmIds);
+        notification.setData(notificationData);
+
+        try {
+            NetworkCall.makePostRequest(notification, url, authorizationKey);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -500,6 +553,85 @@ public class PollServiceImpl implements PollService {
         return basePollResponse;
     }
 
+    @Override
+    public BasePollResponse getPollCategories(User user) {
+        BasePollResponse basePollResponse = new BasePollResponse();
+
+        User tempUser = isValidUser(user);
+
+        if (tempUser == null) {
+            basePollResponse.setMessage("Invalid user");
+            return basePollResponse;
+        }
+
+        List<String> pollCategories = new ArrayList<>();
+        for (PollCategoryEnum pollCategoryEnum: PollCategoryEnum.values()){
+            pollCategories.add(pollCategoryEnum.name());
+        }
+
+        basePollResponse.setMessage(MatlbStringConstants.RESPONSE_OKAY);
+        basePollResponse.setPollCategories(pollCategories);
+        return basePollResponse;
+    }
+
+    @Override
+    public BasePollResponse reportPoll(User user, Integer pollId) {
+        BasePollResponse basePollResponse = new BasePollResponse();
+
+        User tempUser = isValidUser(user);
+
+        Poll poll = getPollDao().findOne(pollId);
+
+        if(tempUser == null || poll == null) {
+            basePollResponse.setMessage("Invalid user or poll");
+            return basePollResponse;
+        }
+
+        poll.setReportCount(poll.getReportCount() + 1);
+        getPollDao().save(poll);
+        basePollResponse.setMessage(MatlbStringConstants.RESPONSE_OKAY);
+        return basePollResponse;
+    }
+
+    @Override
+    public BasePollResponse getPollAskedDetailsById(User user, Integer pollId){
+
+        BasePollResponse basePollResponse = new BasePollResponse();
+
+        User answerer = isValidUser(user);
+
+        Poll poll = getPollDao().findOne(pollId);
+
+        if(answerer == null || poll == null) {
+            basePollResponse.setMessage("Invalid user or poll");
+            return basePollResponse;
+        }
+
+        List<PollResponse> pollResponses = new ArrayList<>();
+
+        PollResponse pollResponse = new PollResponse(poll);
+        List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAskerOrderByCreateDtDesc(poll, user);
+        List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
+
+        int creditsUsed = 0;
+        if(questionAskedList != null) {
+            for (QuestionAsked question : questionAskedList) {
+                PeopleAnsweredOrNot peopleAnsweredOrNot = new PeopleAnsweredOrNot(question);
+                peopleAnsweredOrNotList.add(peopleAnsweredOrNot);
+                creditsUsed += question.getCreditAlloted();  // not considering the status of questionAsked
+            }
+        }
+
+
+        pollResponse.setCreditsUsed(creditsUsed);
+        pollResponse.setPeopleAnsweredOrNotList(peopleAnsweredOrNotList);
+        pollResponses.add(pollResponse);
+        basePollResponse.setMessage(MatlbStringConstants.RESPONSE_OKAY);
+        basePollResponse.setPollResponseList(pollResponses);
+
+        return basePollResponse;
+    }
+
 
     private User isValidUser(User tempUser) {
         return getUserService().findUserByEmailIdAndAuthToken(tempUser.getEmailId() , tempUser.getAuthToken());
@@ -536,6 +668,10 @@ public class PollServiceImpl implements PollService {
 
     public PollQuestionDao getPollQuestionDao() {
         return pollQuestionDao;
+    }
+
+    public MultimediaDao getMultimediaDao() {
+        return multimediaDao;
     }
 
     public PollAnswerDao getPollAnswerDao() {
