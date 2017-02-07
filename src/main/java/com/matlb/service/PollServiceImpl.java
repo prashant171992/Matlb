@@ -613,7 +613,7 @@ public class PollServiceImpl implements PollService {
         List<PollResponse> pollResponses = new ArrayList<>();
 
         PollResponse pollResponse = new PollResponse(poll);
-        List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAskerOrderByCreateDtDesc(poll, user);
+        List<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAskerOrderByCreateDtDesc(poll, answerer);
         List<PeopleAnsweredOrNot> peopleAnsweredOrNotList = new ArrayList<PeopleAnsweredOrNot>();
 
         int creditsUsed = 0;
