@@ -14,6 +14,6 @@ public interface PollAnswerDao extends JpaRepository<PollAnswer, Integer> {
 
     PollAnswer findByPoll(Poll poll);
     PollAnswer findByPollAndAnswerer(Poll poll , User user);
-    Page<PollAnswer> findByAnswererOrderByCreateDtDesc(User user , Pageable pageRequest);
+    Page<PollAnswer> findByAnswerer(User user , Pageable pageRequest);
 
 }

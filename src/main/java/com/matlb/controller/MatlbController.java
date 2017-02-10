@@ -1,9 +1,11 @@
 package com.matlb.controller;
 
+import com.matlb.domain.Poll;
 import com.matlb.domain.Subscriber;
 import com.matlb.domain.User;
 import com.matlb.domain.requestDomain.*;
 import com.matlb.domain.responseDomain.BasePollResponse;
+import com.matlb.domain.responseDomain.BaseResponse;
 import com.matlb.domain.responseDomain.FriendsPresentResponse;
 import com.matlb.domain.responseDomain.UserResponse;
 import com.matlb.service.PollService;
@@ -121,6 +123,11 @@ public class MatlbController {
     @RequestMapping(method = RequestMethod.POST, value = "/poll/report/{pollId}")
     public BasePollResponse reportPoll(@RequestBody User user,  @PathVariable Integer pollId) {
         return getPollService().reportPoll(user, pollId);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/poll/review")
+    public BaseResponse recordReview(@RequestBody RecordReviewRequest recordReviewRequest) {
+        return getPollService().recordReview(recordReviewRequest);
     }
 
     public UserService getUserService() {

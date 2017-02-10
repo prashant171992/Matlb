@@ -1,11 +1,9 @@
 package com.matlb.service;
 
 import com.matlb.domain.User;
-import com.matlb.domain.requestDomain.AnswerQuestionRequest;
-import com.matlb.domain.requestDomain.CreatePollRequest;
-import com.matlb.domain.requestDomain.PollEnquiryRequest;
-import com.matlb.domain.requestDomain.ShowPollRequest;
+import com.matlb.domain.requestDomain.*;
 import com.matlb.domain.responseDomain.BasePollResponse;
+import com.matlb.domain.responseDomain.BaseResponse;
 
 /**
  * Created by prassingh on 8/21/16.
@@ -33,5 +31,7 @@ public interface PollService {
     public BasePollResponse reportPoll(User user, Integer pollId);
 
     public BasePollResponse getPollAskedDetailsById(User user, Integer pollId);
+
+    public BaseResponse recordReview(RecordReviewRequest recordReviewRequest);
 
 }
