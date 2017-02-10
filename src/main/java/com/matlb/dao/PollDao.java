@@ -20,13 +20,13 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAskerAndGenreOrderByCreateDtDesc(User asker , GenreType genre , Pageable pageRequest);
 
-    Page<Poll> findByAskerAndStatusOrderByCreateDtDesc(User asker , StatusType status, Pageable pageRequest);
+    Page<Poll> findByAskerAndStatus(User asker , StatusType status, Pageable pageRequest);
 
-    Page<Poll> findByAskerOrderByCreateDtDesc(User asker, Pageable pageRequest);
+    Page<Poll> findByAsker(User asker, Pageable pageRequest);
 
-    Page<Poll> findByPollOpenForAllAndStatusOrderByCreateDtDesc(int pollOpenForAll , StatusType status , Pageable pageRequest);
+    Page<Poll> findByPollOpenForAllAndStatus(int pollOpenForAll , StatusType status , Pageable pageRequest);
 
-    Page<Poll> findByPollOpenForAllAndStatusAndPollCategoryOrderByCreateDtDesc(int pollOpenForAll , StatusType status , PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
+    Page<Poll> findByPollOpenForAllAndStatusAndPollCategory(int pollOpenForAll , StatusType status , PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
 
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
 

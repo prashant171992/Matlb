@@ -8,13 +8,15 @@ import com.matlb.domain.responseDomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by prassingh on 8/22/16.
@@ -42,6 +44,9 @@ public class PollServiceImpl implements PollService {
     private QuestionAskedDao questionAskedDao;
 
     @Autowired
+    private UserReviewDao userReviewDao;
+
+    @Autowired
     private UserDao userDao;
 
     @Autowired
@@ -57,7 +62,7 @@ public class PollServiceImpl implements PollService {
     @Override
     public BasePollResponse getPollsCreatedByUser(PollEnquiryRequest pollEnquiryRequest, int pageNum) {
 
-        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE);
+        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE, Sort.Direction.DESC, "createDt");
 
         BasePollResponse basePollResponse ;
 
@@ -68,9 +73,9 @@ public class PollServiceImpl implements PollService {
             Page<Poll> polls;
 
             if(pollEnquiryRequest.getStatus() == StatusType.ALL.ordinal()) {
-                polls = getPollDao().findByAskerOrderByCreateDtDesc(pollEnquiryRequest.getUser() , pageRequest);
+                polls = getPollDao().findByAsker(pollEnquiryRequest.getUser() , pageRequest);
             } else {
-                polls = getPollDao().findByAskerAndStatusOrderByCreateDtDesc(pollEnquiryRequest.getUser() , StatusType.values()[pollEnquiryRequest.getStatus()] , pageRequest);
+                polls = getPollDao().findByAskerAndStatus(pollEnquiryRequest.getUser() , StatusType.values()[pollEnquiryRequest.getStatus()] , pageRequest);
             }
 
             List<PollResponse> pollResponseList = new ArrayList<PollResponse>();
@@ -112,7 +117,7 @@ public class PollServiceImpl implements PollService {
     @Override
     public BasePollResponse getPollAnsweredByUser(PollEnquiryRequest pollEnquiryRequest, int pageNum) {
 
-        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE);
+        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE, Sort.Direction.DESC, "createDt");
 
         BasePollResponse basePollResponse ;
 
@@ -120,7 +125,7 @@ public class PollServiceImpl implements PollService {
 
             basePollResponse = new BasePollResponse(MatlbStringConstants.RESPONSE_OKAY);
 
-            Page<PollAnswer> pollAnswerList = getPollAnswerDao().findByAnswererOrderByCreateDtDesc(pollEnquiryRequest.user , pageRequest);
+            Page<PollAnswer> pollAnswerList = getPollAnswerDao().findByAnswerer(pollEnquiryRequest.user , pageRequest);
 
             List<PollAnsweredResponse> pollAnsweredResponseList = new ArrayList<PollAnsweredResponse>();
 
@@ -176,7 +181,7 @@ public class PollServiceImpl implements PollService {
 
     @Override
     public BasePollResponse getPollAskedToByUser(User user, Integer pollId, int pageNum) {
-        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE);
+        PageRequest pageRequest = new PageRequest(pageNum , PAGE_SIZE, Sort.Direction.DESC, "createDt");
 
         BasePollResponse basePollResponse ;
 
@@ -185,7 +190,7 @@ public class PollServiceImpl implements PollService {
 
             Poll poll = getPollDao().findOne(pollId);
 
-            Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAskerOrderByCreateDtDesc(poll , user , pageRequest);
+            Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByPollAndAsker(poll , user , pageRequest);
 
             List<PollQuestionAskedToResponse> pollQuestionAskedToResponseList = new ArrayList<PollQuestionAskedToResponse>();
 
@@ -207,7 +212,7 @@ public class PollServiceImpl implements PollService {
 
     @Override
     public BasePollResponse getPollToBeShownToUser(ShowPollRequest showPollRequest) {
-        PageRequest pageRequest = new PageRequest(showPollRequest.getPageNumber() , PAGE_SIZE);
+        PageRequest pageRequest = new PageRequest(showPollRequest.getPageNumber() , PAGE_SIZE, Sort.Direction.DESC, "createDt");
 
         BasePollResponse basePollResponse ;
         User user = showPollRequest.getUser();
@@ -222,9 +227,9 @@ public class PollServiceImpl implements PollService {
 
                 Page<Poll> polls;
                 if (showPollRequest.getCategory() != null) {
-                     polls = getPollDao().findByPollOpenForAllAndStatusAndPollCategoryOrderByCreateDtDesc(1 , StatusType.RUNNING , PollCategoryEnum.valueOf(showPollRequest.getCategory()), pageRequest);
+                     polls = getPollDao().findByPollOpenForAllAndStatusAndPollCategory(1 , StatusType.RUNNING , PollCategoryEnum.valueOf(showPollRequest.getCategory()), pageRequest);
                 } else {
-                     polls = getPollDao().findByPollOpenForAllAndStatusOrderByCreateDtDesc(1 , StatusType.RUNNING , pageRequest);
+                     polls = getPollDao().findByPollOpenForAllAndStatus(1 , StatusType.RUNNING , pageRequest);
                 }
 
 
@@ -247,7 +252,7 @@ public class PollServiceImpl implements PollService {
 
             } else {
 
-                Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatusOrderByCreateDtDesc(user , StatusType.PENDING , pageRequest);
+                Page<QuestionAsked> questionAskedList = getQuestionAskedDao().findByAnswererAndStatus(user , StatusType.PENDING , pageRequest);
                 if(questionAskedList != null) {
                     for(QuestionAsked questionAsked : questionAskedList) {
                         if (questionAsked.getPoll().getStatus().equals(StatusType.RUNNING)) {
@@ -634,6 +639,22 @@ public class PollServiceImpl implements PollService {
         return basePollResponse;
     }
 
+    public BaseResponse recordReview(RecordReviewRequest recordReviewRequest) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        User answerer = isValidUser(recordReviewRequest.getUser());
+
+        if(answerer == null || (recordReviewRequest.getStar() < 1 || recordReviewRequest.getStar() > 5)) {
+            baseResponse.setMessage("Invalid user or stars");
+            return baseResponse;
+        }
+
+        UserReview userReview = new UserReview(recordReviewRequest);
+        getUserReviewDao().save(userReview);
+        baseResponse.setMessage(MatlbStringConstants.RESPONSE_OKAY);
+        return baseResponse;
+    }
+
 
     private User isValidUser(User tempUser) {
         return getUserService().findUserByEmailIdAndAuthToken(tempUser.getEmailId() , tempUser.getAuthToken());
@@ -686,5 +707,9 @@ public class PollServiceImpl implements PollService {
 
     public UserDao getUserDao() {
         return userDao;
+    }
+
+    public UserReviewDao getUserReviewDao() {
+        return userReviewDao;
     }
 }
