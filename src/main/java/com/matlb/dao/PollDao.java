@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface PollDao extends JpaRepository<Poll, Integer> {
 
-    @Query("SELECT poll from Poll poll JOIN poll.pollAnswers where poll.asker = :user")
+    @Query("SELECT p from poll p JOIN p.pollAnswers where p.asker = :user")
     Page<Poll> findByAskerAndFetchPollAnswersEagerly(@Param("user") User asker , Pageable pageRequest);
 
     Page<Poll> findByAskerAndGenreOrderByCreateDtDesc(User asker , GenreType genre , Pageable pageRequest);
@@ -24,13 +24,13 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAsker(User asker, Pageable pageRequest);
 
-    @Query(value = "SELECT poll FROM Poll poll WHERE poll.pollOpenForAll = :pollOpenForAll AND poll.status = :status \n#pageable\n",
-            countQuery = "SELECT count(poll) FROM Poll poll WHERE poll.pollOpenForAll = :pollOpenForAll AND poll.status = :status",
+    @Query(value = "SELECT p FROM poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status \n#pageable\n",
+            countQuery = "SELECT count(p) FROM poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status",
             nativeQuery = true)
     Page<Poll> findByPollOpenForAllAndStatus(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , Pageable pageRequest);
 
-    @Query(value = "SELECT poll FROM Poll poll WHERE poll.pollOpenForAll = :pollOpenForAll AND poll.status = :status AND poll.pollCategory = :pollCategoryEnum \n#pageable\n",
-            countQuery = "SELECT count(poll) FROM Poll poll WHERE poll.pollOpenForAll = :pollOpenForAll AND poll.status = :status AND poll.pollCategory = :pollCategoryEnum",
+    @Query(value = "SELECT p FROM poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND poll.pollCategory = :pollCategoryEnum \n#pageable\n",
+            countQuery = "SELECT count(p) FROM poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum",
             nativeQuery = true)
     Page<Poll> findByPollOpenForAllAndStatusAndPollCategory(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , @Param("pollCategoryEnum") PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
 
