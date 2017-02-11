@@ -650,6 +650,7 @@ public class PollServiceImpl implements PollService {
             return baseResponse;
         }
 
+        recordReviewRequest.setUser(answerer);
         UserReview userReview = new UserReview(recordReviewRequest);
         getUserReviewDao().save(userReview);
         baseResponse.setMessage(MatlbStringConstants.RESPONSE_OKAY);
