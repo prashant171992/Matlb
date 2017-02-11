@@ -22,11 +22,11 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
 
     Page<Poll> findByAsker(User asker, Pageable pageRequest);
 
-    @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status \n#pageable\n",
+    @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status",
             countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status")
     Page<Poll> findByPollOpenForAllAndStatus(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , Pageable pageRequest);
 
-    @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum \n#pageable\n",
+    @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum",
             countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum")
     Page<Poll> findByPollOpenForAllAndStatusAndPollCategory(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , @Param("pollCategoryEnum") PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
 
