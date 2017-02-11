@@ -2,18 +2,16 @@ package com.matlb.dao;
 
 import com.matlb.domain.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 /**
  * Created by prassingh on 8/19/16.
  */
-public interface PollDao extends JpaRepository<Poll, Integer> {
+public interface PollDao extends JpaRepository<Poll, Integer> , QueryDslPredicateExecutor<Poll> {
 
     @Query("SELECT p from Poll p JOIN p.pollAnswers where p.asker = :user")
     Page<Poll> findByAskerAndFetchPollAnswersEagerly(@Param("user") User asker , Pageable pageRequest);
