@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * Created by prassingh on 8/19/16.
  */
-public interface PollDao extends JpaRepository<Poll, Integer> , QueryDslPredicateExecutor<Poll> {
+public interface PollDao extends JpaRepository<Poll, Integer> {
 
     @Query("SELECT p from Poll p JOIN p.pollAnswers where p.asker = :user")
     Page<Poll> findByAskerAndFetchPollAnswersEagerly(@Param("user") User asker , Pageable pageRequest);
@@ -23,13 +23,11 @@ public interface PollDao extends JpaRepository<Poll, Integer> , QueryDslPredicat
     Page<Poll> findByAsker(User asker, Pageable pageRequest);
 
     @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status \n#pageable\n",
-            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status",
-            nativeQuery = true)
+            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status")
     Page<Poll> findByPollOpenForAllAndStatus(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , Pageable pageRequest);
 
-    @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND poll.pollCategory = :pollCategoryEnum \n#pageable\n",
-            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum",
-            nativeQuery = true)
+    @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum \n#pageable\n",
+            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum")
     Page<Poll> findByPollOpenForAllAndStatusAndPollCategory(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , @Param("pollCategoryEnum") PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
 
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
