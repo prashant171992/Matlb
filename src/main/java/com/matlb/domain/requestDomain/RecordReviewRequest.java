@@ -10,9 +10,9 @@ public class RecordReviewRequest {
     private User user;
     private int star;
     private String review;
-    private int appVersion;
+    private String appVersion;
 
-    public RecordReviewRequest(User user, int star, String review, int appVersion) {
+    public RecordReviewRequest(User user, int star, String review, String appVersion) {
         this.user = user;
         this.star = star;
         this.review = review;
@@ -46,11 +46,11 @@ public class RecordReviewRequest {
         this.review = review;
     }
 
-    public int getAppVersion() {
+    public String getAppVersion() {
         return appVersion;
     }
 
-    public void setAppVersion(int appVersion) {
+    public void setAppVersion(String appVersion) {
         this.appVersion = appVersion;
     }
 }

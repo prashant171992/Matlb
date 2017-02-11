@@ -23,6 +23,7 @@ public class UserReview implements Serializable {
         this.star = recordReviewRequest.getStar();
         this.review = recordReviewRequest.getReview();
         this.user = recordReviewRequest.getUser();
+        this.appVersion = recordReviewRequest.getAppVersion();
     }
 
     @Id
