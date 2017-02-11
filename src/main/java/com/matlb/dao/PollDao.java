@@ -25,11 +25,13 @@ public interface PollDao extends JpaRepository<Poll, Integer> {
     Page<Poll> findByAsker(User asker, Pageable pageRequest);
 
     @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status \n#pageable\n",
-            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status")
+            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status",
+            nativeQuery = true)
     Page<Poll> findByPollOpenForAllAndStatus(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , Pageable pageRequest);
 
     @Query(value = "SELECT p FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND poll.pollCategory = :pollCategoryEnum \n#pageable\n",
-            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum")
+            countQuery = "SELECT count(p) FROM Poll p WHERE p.pollOpenForAll = :pollOpenForAll AND p.status = :status AND p.pollCategory = :pollCategoryEnum",
+            nativeQuery = true)
     Page<Poll> findByPollOpenForAllAndStatusAndPollCategory(@Param("pollOpenForAll") int pollOpenForAll , @Param("status") StatusType status , @Param("pollCategoryEnum") PollCategoryEnum pollCategoryEnum,  Pageable pageRequest);
 
     //Page<Poll> findByAskerAndStillValid(User asker, Pageable pageRequest);
