@@ -36,8 +36,11 @@ public class UserReview implements Serializable {
     @Column(name = "star", nullable = false)
     private int star;
 
-    @Column(name = "review", nullable = true)
+    @Column(name = "review", nullable = false)
     private String review;
+
+    @Column(name = "version", nullable = false)
+    private String appVersion;
 
     @Basic(optional = false)
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -83,5 +86,13 @@ public class UserReview implements Serializable {
 
     public Date getUpdateDt() {
         return updateDt;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
     }
 }
