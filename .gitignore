@@ -52,8 +52,11 @@ gradle/wrapper/wrapper
 hs_err_pid*
 
 # application property
-*.properties
+application.properties
+application-dev.properties
+application-prod.properties
 
 #Python
 
 python-service
+src/main/webapp/
