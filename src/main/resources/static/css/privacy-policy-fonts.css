@@ -1,0 +1,280 @@
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('../vendor/font-awesome/fonts/fontawesome-webfont.eot?v=4.6.3');
+    src: url('../vendor/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('../vendor/font-awesome/fonts/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('../vendor/font-awesome/fonts/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('../vendor/font-awesome/fonts/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('../vendor/font-awesome/fonts/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    font-family: 'FontAwesome';
+}
+p {
+    font-weight:normal;
+}
+.sec_Connect_With_Us p,
+.Testimonial_content span,
+.Testimonial_content p,
+.blog-item h4,
+.blog-item p,
+.simplefilter li,
+.sec_Portfolio p{
+    font-family: 'FontAwesome';
+    font-weight:normal;
+}
+
+.service_sec h2{
+    font-family: 'FontAwesome';
+    font-weight:normal;
+}
+.sec_Together_Experience h2,
+.service_sec h2,
+.about_sec h2,
+.blog-item h3,
+.sec_Portfolio h1,
+h1{
+    font-family: 'FontAwesome';
+    font-weight:normal;
+}
+
+.positon_bottom > h3{
+    font-family: 'FontAwesome';
+    font-size:24px;
+    font-weight:normal;
+}
+.Testimonial_content h3,
+.sec_Together_Experience .positon_bottom p{
+    font-family: 'FontAwesome';
+    font-weight:normal;
+}
+.sec_Together_Experience h2{
+    font-weight:normal;
+}
+
+.contact_us_form input.form-control{
+    font-family: 'FontAwesome';
+    font-size:14px;
+    color:#fff;
+    padding: 0px 10px 0px 50px;
+}
+.about_content{ font-size:16px;}
+.about-text p.roboto_slab {
+    font-size: 22px;
+}
+.about-text {
+
+    padding: 25px 25px 35px;
+    max-width: 380px;
+    margin-right: 35px;
+    margin-bottom: 45px;
+}
+
+.contact_us_form ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color:#fff;
+}
+.contact_us_form ::-moz-placeholder { /* Firefox 19+ */
+    color:#fff;
+}
+.contact_us_form :-ms-input-placeholder { /* IE 10+ */
+    color:#fff;
+}
+.contact_us_form :-moz-placeholder { /* Firefox 18- */
+    color:#fff;
+}
+
+.about-text p.roboto_slab{
+    font-family: 'FontAwesome';
+    font-weight:normal;
+}
+.about_content{
+    border-bottom: 1px solid #ededed;
+}
+ul.dropdown-menu.nav_menu_01 > li >a{
+    font-family: 'FontAwesome';
+}
+.caption p {
+    margin-bottom: 20px;
+}
+.blog-item .thumbnail {
+    margin-bottom: 55px;
+}
+.blog-item h3{ margin-top: 35px;}
+.contact_content h3{margin: 0 0 10px; font-family: 'FontAwesome';}
+.contact_content span{line-height:24px;}
+
+.service_sec h2 {
+    margin: 5px 0 25px;
+}
+.service_box_col h3{ font-weight:normal;}
+.gscr_lSAction > a {
+    background-image: url("../img/controls.png");
+}
+.sec_find_a_buddy.sec_Portfolio {
+    background-position: center center;
+}
+.sec_Portfolio.sec_find_a_buddy:before {
+    background: rgba(7, 32, 47, 0.78);
+}
+.myTestimonial{
+    margin: 30px 0 0;
+}
+.sec_Testimonial h2{
+    margin: 0 0 0px;
+    font-weight:normal;
+}
+.myTestimonial .gscr_slideWrapper{
+    padding:10px 0;
+}
+.myTestimonial .gscr_slideOuter .gscr_carousel,
+.myTestimonial .gscr_slideOuter .gscr_slideOuter .gscr_lSPager.myTestimonial{
+    overflow:visible;
+}
+.myTestimonial .gscr_lSAction > a{
+    background-color:#ccc;
+    border-radius:100%;
+}
+.home_slider_01 {
+    min-height: 405px;
+    position:relative;
+}
+.positon_bottom {
+    position: absolute;
+    bottom: 0;
+    padding: 25px 25px 15px;
+    background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 5%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 5%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 5%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+.sec_Together_Experience .positon_bottom p{
+    margin:0;
+    color:#ffd900;
+}
+.home_slider_01 {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 405px;
+    position: relative;
+}
+.positon_bottom > h3 {
+    margin: 10px 0 0;
+}
+.sec_Together_Experience .gscr_lSAction > .gscr_lSPrev{
+    left:-35px;
+}
+.sec_Together_Experience .gscr_lSAction > .gscr_lSNext{
+    right: -35px;
+}
+
+.sec_Together_Experience  .gscr_slideWrapper{
+    padding-top:35px;
+}
+#Together_Experience_carousel{
+    overflow:visible;
+}
+
+
+/*.gscr_carousel.gscr_slide.gscr_lSSlide.gscr_lsGrab,
+.gscr_slideWrapper,
+.gscr_outerwrapper{ overflow-y:visible !important;}*/
+
+.sec_Together_Experience .gscr_lslide.gscr_active,
+.sec_Together_Experience .gscr_clone.gscr_active{
+    margin-right: -15px !important;
+    margin-top: -35px !important;
+}
+
+.sec_Together_Experience .gscr_clone,
+.sec_Together_Experience .gscr_lslide{
+    position:relative;
+    box-shadow: 3px 3px 10px 1px rgba(0, 0, 0, 0.5);
+}
+
+.sec_who_we_are h1,
+.myFind_A_Buddy_content h1,
+.sec_you_enjoy h1 {
+    font-family: 'Conv_CircularStd-Bold' !important;
+}
+
+.sec_who_we_are h1{ line-height:38px;  margin: 0 0 20px;}
+
+.sign-up,
+.forgetpassword,
+.login {
+    background: #ff573a;
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 30px;
+}
+.navbar-nav > li > a.partner_login{ position:relative;}
+.partner-login-form {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: auto;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.partner-login-form {
+    width: 320px;
+    padding: 15px 15px 15px 15px;
+    border-radius: 0px;
+    margin-top: 20px !important;
+    box-shadow: 0px -5px 19px #ccc;
+}
+.partner-login-form.open {
+    display: block;
+}
+
+.sign_up,
+.forget_password{
+    display: none;
+}
+
+.login_form_div{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:-1;
+}
+@media (max-width:767px){
+    .sec_bg .col-xs-12{
+        clear:both;
+    }
+    .sec_find_a_buddy img.pull-right{
+        float:none !important;
+    }
+    .myFind_A_Buddy_content{
+        padding:0;
+    }
+    .gscr_lSAction > .gscr_lSPrev,
+    .sec_Together_Experience .gscr_lSAction > .gscr_lSPrev{
+        left:-10px;
+    }
+
+    .gscr_lSAction > .gscr_lSNext,
+    .sec_Together_Experience .gscr_lSAction > .gscr_lSNext{
+        right: -10px;
+    }
+}
+
+
